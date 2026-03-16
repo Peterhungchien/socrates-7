@@ -100,7 +100,7 @@ The initialization prompt will set `JUPYTER_ENABLED: true` in `teacher/system.md
 For large textbooks (500+ pages), NotebookLM indexes your entire corpus and provides grounded, cited answers — acting as a reference librarian for the teacher.
 
 **Install:**
-See `https://github.com/jacob-bd/notebooklm-mcp-cli?tab=readme-ov-file#installation`
+See <https://github.com/jacob-bd/notebooklm-mcp-cli?tab=readme-ov-file#installation>
 
 **Add to Claude Desktop config:**
 
