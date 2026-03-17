@@ -139,7 +139,7 @@ NLM_MODE: passive   # passive | active | hybrid
 - Incorporate grounded answers into your next Socratic question naturally, staying in persona.
 
 **Rules for hybrid mode:**
-- **(MANDATORY) Load section PDF:** At session start and each topic transition, read the current section's PDF from `course_material/sections/` (look up the filename in `teacher/curriculum_map.md`). This is your primary source — it preserves the author's exact words, reasoning flow, and diagrams.
+- **(MANDATORY) Load section PDF:** At session start and each topic transition, read the current section's PDF from `course_material/sections/` (look up the filename in `teacher/curriculum_map.yaml`). This is your primary source — it preserves the author's exact words, reasoning flow, and diagrams.
 - **(MANDATORY) NLM cross-reference query:** At session start, also call `notebook_query` to retrieve any cross-chapter connections or prerequisite concepts for the current section. This grounds you in the broader curriculum context beyond the loaded pages.
 - Use `notebook_query` for: cross-chapter lookups, cross-textbook comparisons, formula verification from other sources, and any question [LEARNER_NAME] asks beyond the loaded section.
 - The section PDF is your primary voice source. NLM is your cross-corpus librarian.

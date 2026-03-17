@@ -21,7 +21,7 @@ I want to set up Socrates-7 in this project. Please read `teacher/system.md` and
    - **Passive:** NLM called for cross-chapter lookups and verification (~3–5 queries/session). Chapter files loaded into context.
    - **Active:** NLM used as the primary source for all factual content. No chapter files loaded into context.
    - **Hybrid (recommended for 2–3 textbooks):** Pre-split section PDFs are loaded into context for each topic (preserving the author's exact words, reasoning flow, and diagrams). NLM handles cross-chapter and cross-textbook retrieval. Requires a one-time PDF split — I'll help you set that up.
-   If you choose hybrid mode, I'll also help you fill in `teacher/curriculum_map.md` with your textbook sections and page ranges, then run the split script.
+   If you choose hybrid mode, I'll also help you fill in `teacher/curriculum_map.yaml` with your textbook sections and page ranges, then run the split script.
 
 After I've answered all questions, do the following:
 
@@ -32,10 +32,10 @@ After I've answered all questions, do the following:
 5. Update `teacher/knowledge_gaps.md` — replace `[LEARNER_NAME]` with my name.
 6. Verify the jupyter MCP server: call `list_kernels`, create a test notebook with `use_notebook`, insert and execute a test cell, and confirm it works.
 7. Guide me through the NotebookLM setup checklist in `teacher/notebooklm.md` — create a notebook, upload sources, and verify a test query works.
-8. If hybrid mode was chosen: help me populate `teacher/curriculum_map.md` using NLM-assisted generation:
+8. If hybrid mode was chosen: help me populate `teacher/curriculum_map.yaml` using NLM-assisted generation:
    - Ask me which textbook in `course_material/` is my primary one.
    - Call `notebook_query` with: `'List all chapters and sections of [textbook title] with their page ranges. Format as: Unit number, Topic name, Start page - End page.'`
-   - Parse the NLM response and auto-populate the table in `teacher/curriculum_map.md`.
+   - Parse the NLM response and auto-populate the table in `teacher/curriculum_map.yaml`.
    - Present the generated map to me: "Here's the section structure I found. Please review and correct any page numbers that look off."
    - After I confirm or correct, run `python tools/split_pdf.py` to generate the section PDFs in `course_material/sections/`.
 

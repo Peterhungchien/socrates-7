@@ -1,0 +1,18 @@
+# Curriculum Map
+# Maps each curriculum section to its source textbook and page range.
+# Used by hybrid NLM mode to load the correct section PDF at each topic transition.
+#
+# To populate: During initialization (step 8 of docs/init_prompt.md), the teacher
+# will auto-populate this file using NLM by querying your textbook's structure.
+# Review the generated map, correct any page numbers, then run:
+#   pip install pypdf pyyaml
+#   python tools/split_pdf.py
+
+sections: []
+# Example entry:
+#   - unit: "1"
+#     topic: "Activation Functions"
+#     textbook: "deep_learning.pdf"
+#     start_page: 16
+#     end_page: 25
+#     section_pdf: ""

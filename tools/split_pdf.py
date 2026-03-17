@@ -4,11 +4,11 @@
 Usage:
     python tools/split_pdf.py [--map MAP_FILE] [--output-dir OUTPUT_DIR]
 
-Reads the curriculum map (default: teacher/curriculum_map.md), parses the
-Markdown table for textbook filenames and page ranges, and writes individual
+Reads the curriculum map (default: teacher/curriculum_map.yaml), parses the
+YAML sections for textbook filenames and page ranges, and writes individual
 section PDFs to course_material/sections/.
 
-Requires: pip install pypdf
+Requires: pip install pypdf pyyaml
 """
 
 import argparse
@@ -19,50 +19,12 @@ from pathlib import Path
 try:
     from pypdf import PdfReader, PdfWriter
 except ImportError:
-    sys.exit("Error: pypdf is not installed. Run: pip install pypdf")
+    sys.exit("Error: pypdf is not installed. Run: pip install pypdf pyyaml")
 
-
-def parse_curriculum_map(map_path: Path) -> list[dict]:
-    """Parse the Markdown table in the curriculum map file.
-
-    Returns a list of dicts with keys: unit, topic, textbook, pages, section_pdf.
-    """
-    text = map_path.read_text()
-    # Find table rows (skip header and separator lines)
-    rows = []
-    in_table = False
-    for line in text.splitlines():
-        line = line.strip()
-        if not line.startswith("|"):
-            in_table = False
-            continue
-        cols = [c.strip() for c in line.split("|")[1:-1]]
-        if not in_table:
-            # First row is the header
-            in_table = True
-            continue
-        # Skip separator row (e.g. |---|---|...)
-        if all(re.fullmatch(r":?-+:?", c) for c in cols):
-            continue
-        if len(cols) >= 4:
-            rows.append(
-                {
-                    "unit": cols[0],
-                    "topic": cols[1],
-                    "textbook": cols[2],
-                    "pages": cols[3],
-                    "section_pdf": cols[4] if len(cols) >= 5 else "",
-                }
-            )
-    return rows
-
-
-def parse_page_range(pages_str: str) -> tuple[int, int]:
-    """Parse '16-25' into (16, 25). Pages are 1-indexed."""
-    match = re.match(r"(\d+)\s*[-–]\s*(\d+)", pages_str.strip())
-    if not match:
-        raise ValueError(f"Cannot parse page range: {pages_str!r}")
-    return int(match.group(1)), int(match.group(2))
+try:
+    import yaml
+except ImportError:
+    sys.exit("Error: pyyaml is not installed. Run: pip install pypdf pyyaml")
 
 
 def slugify(text: str) -> str:
@@ -88,8 +50,8 @@ def main():
     parser = argparse.ArgumentParser(description="Split textbook PDFs by curriculum map")
     parser.add_argument(
         "--map",
-        default="teacher/curriculum_map.md",
-        help="Path to curriculum map (default: teacher/curriculum_map.md)",
+        default="teacher/curriculum_map.yaml",
+        help="Path to curriculum map (default: teacher/curriculum_map.yaml)",
     )
     parser.add_argument(
         "--output-dir",
@@ -106,16 +68,17 @@ def main():
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    rows = parse_curriculum_map(map_path)
+    data = yaml.safe_load(map_path.read_text())
+    rows = data.get("sections") or []
     if not rows:
-        sys.exit("Error: No rows found in curriculum map table.")
+        sys.exit("Error: No sections found in curriculum map.")
 
     # Cache opened PDFs by filename
     readers: dict[str, PdfReader] = {}
     course_dir = Path("course_material")
 
     for row in rows:
-        textbook = row["textbook"]
+        textbook = row.get("textbook", "")
         if not textbook:
             continue
 
@@ -132,16 +95,22 @@ def main():
         if reader is None:
             continue
 
-        start, end = parse_page_range(row["pages"])
-        section_name = f"{slugify(row['unit'])}_{slugify(row['topic'])}.pdf"
+        start = int(row["start_page"])
+        end = int(row["end_page"])
+        section_name = f"{slugify(str(row['unit']))}_{slugify(row['topic'])}.pdf"
         output_path = output_dir / section_name
 
         split_pdf(reader, start, end, output_path)
+        row["section_pdf"] = section_name
         print(f"  {section_name}  (pages {start}-{end} from {textbook})")
 
-    # Print reminder to update curriculum map
+    # Write section_pdf values back to the YAML file
+    data["sections"] = rows
+    with open(map_path, "w") as f:
+        yaml.dump(data, f, default_flow_style=False, sort_keys=False)
+
     print(f"\nDone. Section PDFs written to {output_dir}/")
-    print("Update the 'Section PDF' column in your curriculum map if needed.")
+    print(f"Updated section_pdf fields in {map_path}.")
 
 
 if __name__ == "__main__":
