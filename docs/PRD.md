@@ -580,6 +580,8 @@ nlm login   # launches Chrome, cookies extracted automatically
 
 **Active:** For large corpora (500+ pages). Each session begins with a `notebook_query` briefing of the target section. NLM is queried at each topic transition. No chapter file loaded into context.
 
+**Hybrid:** For medium corpora with 2–3 textbooks. Pre-split section PDFs are loaded into context for each topic (preserving the author's exact words, reasoning flow, and diagrams). NLM handles cross-chapter and cross-textbook retrieval. Requires one-time PDF splitting via `tools/split_pdf.py` and a populated `teacher/curriculum_map.md`.
+
 **Artifact mode:** After completing a chapter — `studio_create` for flashcards or study guides; `download_artifact` saves them to `teacher/artifacts/`.
 
 ### 11.5 `system.md` Block for NLM Integration
@@ -587,7 +589,7 @@ nlm login   # launches Chrome, cookies extracted automatically
 ```
 ## NotebookLM Integration
 NOTEBOOKLM_NOTEBOOK_ID: <paste-uuid-here>
-NLM_MODE: passive   # passive | active
+NLM_MODE: passive   # passive | active | hybrid
 
 Rules for passive mode:
 - Call notebook_query only for cross-chapter facts, formula verification,
@@ -600,6 +602,16 @@ Rules for active mode:
   chat_style='learning_guide')
 - All factual grounding comes from NLM responses. Do not load chapter files.
 
+Rules for hybrid mode:
+- At session start and each topic transition: read the section PDF from
+  course_material/sections/ (look up filename in teacher/curriculum_map.md).
+  This is the primary source — preserves author's exact words, reasoning, diagrams.
+- Also call notebook_query for cross-chapter connections and prerequisite concepts.
+- Use NLM for cross-chapter lookups, cross-textbook comparisons, and questions
+  beyond the loaded section. Section PDF = voice source. NLM = cross-corpus librarian.
+- Channel the author's reasoning through your persona — follow their derivation arc,
+  use their analogies as Socratic probes. Do not quote the PDF verbatim.
+
 On auth failure:
 - Stay in persona: 'Give me a moment — I need to refresh something.'
 - Tell learner: 'Please run: nlm login'  then resume immediately.
@@ -611,8 +623,9 @@ On auth failure:
 |---|---|
 | Cookie expiration (2–4 weeks) | Teacher detects auth errors and prompts `nlm login` |
 | NLM API changes | `uv tool install --force notebooklm-mcp-cli`; system falls back to in-context teaching |
-| Free tier query limit (~50/day) | Passive mode only; reserve for genuine cross-chapter retrieval |
+| Free tier query limit (~50/day) | Hybrid mode uses ~2–4 NLM queries/session (cross-chapter only); active mode uses ~5–10. Monitor usage. |
 | NLM query latency (5–15s) | Teacher narrates "let me check the textbook…" — latency absorbed into persona |
+| Hybrid mode section PDF context cost | Section PDFs consume context window space (~10–30 pages per section). Keep sections granular in `curriculum_map.md`; split at sub-chapter level if needed |
 | 29 MCP tools consume context | Disable `notebooklm-mcp` from Claude Desktop settings between sessions |
 
 ---

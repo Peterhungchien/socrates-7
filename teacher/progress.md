@@ -13,6 +13,7 @@
 |---|---|
 | **Current Unit** | |
 | **Current Topic** | |
+| **Current Section PDF** | |
 | **Last Completed** | |
 | **Last Session Date** | |
 

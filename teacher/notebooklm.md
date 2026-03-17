@@ -37,7 +37,7 @@
 - [ ] Create notebook: use `notebook_create` in Claude Desktop
 - [ ] Upload sources: use `source_add` for each file in `course_material/`
 - [ ] Copy notebook ID to `teacher/system.md` → `NOTEBOOKLM_NOTEBOOK_ID`
-- [ ] Set `NLM_MODE: passive` or `active` in `teacher/system.md`
+- [ ] Set `NLM_MODE: passive`, `active`, or `hybrid` in `teacher/system.md`
 
 ---
 
