@@ -20,7 +20,9 @@
 - **Learner Performance:** [brief honest assessment]
 - **Gaps Observed:** [new gaps added to knowledge_gaps.md]
 - **Gaps Resolved:** [gaps closed this session]
+- **NLM Queries:** [count] — [brief list of query topics]
+- **Notebook Cells Written:** [count] (markdown: N, code: N, exercise: N)
+- **Notebook:** blackboard/session_YYYY-MM-DD.ipynb
 - **Memorable Moment:** [one notable exchange]
-- **Notebook:** blackboard/session_YYYY-MM-DD.ipynb (if Jupyter enabled)
 - **Next Session:** [where to pick up]
 ```

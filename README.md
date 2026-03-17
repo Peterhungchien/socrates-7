@@ -6,12 +6,14 @@ An AI-powered Socratic learning system for Claude Desktop.
 
 Socrates-7 transforms any textbook or course material into an interactive Socratic dialogue. A persistent AI teacher persona guides you through the material purely by asking questions — never lecturing directly — while all session history, progress, and persona state are recorded in Markdown files across conversations.
 
-Optionally, a live Jupyter notebook serves as a blackboard for formulas, code demos, and exercises. See [docs/PRD.md](docs/PRD.md) for the full specification.
+A live Jupyter notebook serves as a blackboard for formulas, code demos, and exercises, while NotebookLM provides full-corpus knowledge retrieval to keep teaching grounded in your actual textbooks. See [docs/PRD.md](docs/PRD.md) for the full specification.
 
 ## Prerequisites
 
 - [Claude Desktop](https://claude.ai/download) with Claude Opus or Sonnet
 - [Filesystem MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem) — gives Claude read/write access to the project files
+- [Jupyter MCP server](https://github.com/datalayer/jupyter-mcp-server) — live notebook blackboard for formulas, code demos, and exercises
+- [NotebookLM MCP CLI](https://github.com/jacob-bd/notebooklm-mcp-cli) — full-corpus knowledge retrieval from your textbooks
 
 ## Quick Start
 
@@ -49,7 +51,7 @@ Drop your textbooks, notes, or PDFs into `course_material/`.
 
 ### 4. Run the guided setup
 
-Open Claude Desktop and paste the contents of [`docs/init_prompt.md`](docs/init_prompt.md). Claude will interview you step by step — your background, learning goals, teacher persona preferences, and optional integrations — then populate all template files automatically.
+Open Claude Desktop and paste the contents of [`docs/init_prompt.md`](docs/init_prompt.md). Claude will interview you step by step — your background, learning goals, teacher persona preferences, and integration settings — then populate all template files automatically.
 
 ### 5. Start studying
 
@@ -59,9 +61,9 @@ Once setup is complete, open a new conversation in Claude Desktop and type:
 
 Claude reads `teacher/system.md`, loads your persona and progress, and picks up where you left off.
 
-## Optional: Jupyter Blackboard
+## Jupyter Blackboard
 
-Adds a live notebook as a blackboard — the teacher writes formulas, runs code demos, and sets exercises that you see update in real time in your browser.
+The teacher writes formulas, runs code demos, and sets exercises in a live notebook that you see update in real time in your browser.
 
 **Install:**
 
@@ -93,11 +95,11 @@ jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN
 }
 ```
 
-The initialization prompt will set `JUPYTER_ENABLED: true` in `teacher/system.md` if you opt in.
+The initialization prompt will ask about your preferred blackboard style (minimal, moderate, or rich).
 
-## Optional: NotebookLM Integration
+## NotebookLM Integration
 
-For large textbooks (500+ pages), NotebookLM indexes your entire corpus and provides grounded, cited answers — acting as a reference librarian for the teacher.
+NotebookLM indexes your entire corpus and provides grounded, cited answers — acting as a reference librarian for the teacher. This ensures the teacher stays faithful to your actual textbooks rather than relying on parametric knowledge.
 
 **Install:**
 See <https://github.com/jacob-bd/notebooklm-mcp-cli?tab=readme-ov-file#installation>
@@ -117,7 +119,7 @@ Follow the setup checklist in [`teacher/notebooklm.md`](teacher/notebooklm.md) t
 ```
 socrates-7/
   ├── course_material/           ← Your textbooks, notes, PDFs
-  ├── blackboard/                ← Jupyter notebooks (optional)
+  ├── blackboard/                ← Jupyter notebooks (the live blackboard)
   │   └── exercises/             ← Exercise notebooks extracted after sessions
   ├── teacher/                   ← System files (the brain)
   │   ├── system.md              ← Master boot file — read first every session
@@ -127,7 +129,7 @@ socrates-7/
   │   ├── progress.md            ← Where you are in the curriculum
   │   ├── session_log.md         ← Running log of session summaries
   │   ├── knowledge_gaps.md      ← Topics you struggled with (auto-tracked)
-  │   ├── notebooklm.md          ← NLM config and setup checklist (optional)
+  │   ├── notebooklm.md          ← NLM config and setup checklist
   │   └── ...
   ├── examples/                  ← Example files for reference
   │   ├── persona_example.md     ← Sample teacher persona (Linus)
@@ -140,7 +142,7 @@ socrates-7/
 
 ## Full MCP Config Reference
 
-All three servers together (filesystem is required; jupyter and notebooklm-mcp are optional):
+All three MCP servers are required for Socrates-7:
 
 ```json
 {

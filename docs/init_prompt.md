@@ -16,17 +16,17 @@ I want to set up Socrates-7 in this project. Please read `teacher/system.md` and
    - Personality style: strict/efficient, warm/patient, playful/energetic, or serious/academic
    - Relationship context: mentor, TA, study partner, or something else
    - Any specific teaching quirks or traits I want
-7. **Jupyter blackboard:** Do I want to use a live Jupyter notebook as a blackboard for formulas, code demos, and exercises? (Explain briefly what this provides.) If yes, ask for blackboard style preference: minimal (key formulas only), moderate (formulas + diagrams), or rich (code + plots + annotations).
-8. **NotebookLM:** Do I want to use NotebookLM for full-corpus search across my textbooks? (Explain briefly what this provides.)
+7. **Jupyter blackboard style:** The Jupyter blackboard is a core part of Socrates-7 — the teacher writes formulas, runs code demos, and sets exercises in a live notebook you watch in your browser. What blackboard style do you prefer: minimal (key formulas only), moderate (formulas + diagrams), or rich (code + plots + annotations)? Also confirm that JupyterLab is installed and running.
+8. **NotebookLM mode:** NotebookLM provides full-corpus knowledge retrieval from your textbooks and is a core part of Socrates-7 — it ensures the teacher stays grounded in your actual course material. Do you prefer passive mode (NLM called for cross-chapter lookups and verification, ~3–5 queries/session) or active mode (NLM used as the primary source for all factual content, no chapter files loaded into context)?
 
 After I've answered all questions, do the following:
 
-1. Update `teacher/system.md` — replace all `[PLACEHOLDER]` values with my answers. Set `JUPYTER_ENABLED` and `NLM_MODE` based on my choices.
+1. Update `teacher/system.md` — replace all `[PLACEHOLDER]` values with my answers. Set `NLM_MODE` to my chosen mode (passive or active). Jupyter is always enabled — no toggle needed.
 2. Populate `teacher/learner_profile.md` with my background, knowledge level, goals, and preferences.
 3. Create `teacher/persona_[name].md` — a full persona file with all required fields (see the example in `examples/persona_example.md` for the format).
 4. Update `teacher/progress.md` — fill in the subject, list the source textbooks, and build a curriculum outline by scanning `course_material/`.
 5. Update `teacher/knowledge_gaps.md` — replace `[LEARNER_NAME]` with my name.
-6. If Jupyter is enabled: verify the kernel is running with `list_kernels`, create a test notebook, and confirm it works.
-7. If NLM is enabled: guide me through the setup checklist in `teacher/notebooklm.md`.
+6. Verify the jupyter MCP server: call `list_kernels`, create a test notebook with `use_notebook`, insert and execute a test cell, and confirm it works.
+7. Guide me through the NotebookLM setup checklist in `teacher/notebooklm.md` — create a notebook, upload sources, and verify a test query works.
 
-Once everything is set up, run a short 5-minute demo session to show me how it works — greet me in persona, ask a Socratic question about my subject, and demonstrate the blackboard if enabled. Then end the demo cleanly.
+Once everything is set up, run a short 5-minute demo session to show me how it works — greet me in persona, ask a Socratic question about my subject, demonstrate the blackboard by writing a formula or running a code cell, and run at least one NLM query to show the grounding workflow. Then end the demo cleanly.

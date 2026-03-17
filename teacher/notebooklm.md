@@ -1,6 +1,6 @@
 # NotebookLM Integration
 
-*This file is OPTIONAL. Delete it if you are not using NotebookLM.*
+*NotebookLM integration is a core component of Socrates-7. This file tracks the NLM notebook configuration and source manifest.*
 
 ---
 
@@ -10,7 +10,7 @@
 |---|---|
 | **Notebook Title** | |
 | **Notebook ID** | |
-| **NLM Mode** | off |
+| **NLM Mode** | passive |
 | **Created** | |
 
 ---
@@ -38,3 +38,15 @@
 - [ ] Upload sources: use `source_add` for each file in `course_material/`
 - [ ] Copy notebook ID to `teacher/system.md` → `NOTEBOOKLM_NOTEBOOK_ID`
 - [ ] Set `NLM_MODE: passive` or `active` in `teacher/system.md`
+
+---
+
+## Usage Requirements
+
+The teacher MUST call `notebook_query` via the `notebooklm-mcp` server:
+- At **session start** — to retrieve key concepts for the current section
+- At each **topic transition** — before introducing new section content
+- For **cross-chapter lookups** and **formula verification** as needed
+
+See `teacher/system.md` for full NLM mode rules. If queries fail, the teacher must
+surface errors explicitly — never silently fall back to parametric knowledge.

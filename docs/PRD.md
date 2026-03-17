@@ -112,7 +112,7 @@ project-root/
       ├── session_archive.md     ← Archived older session summaries
       ├── knowledge_gaps.md      ← Topics learner struggled with
       ├── book_revision_notes.md ← Suggested improvements to source material
-      ├── notebooklm.md          ← NLM notebook ID + source manifest (if enabled)
+      ├── notebooklm.md          ← NLM notebook ID + source manifest
       ├── group_chat.md          ← Shared group chat log (optional, multi-persona)
       ├── group_chat_unread.md   ← Unread messages buffer
       └── temp/                  ← Auto-deleted after session
@@ -511,7 +511,7 @@ Summary of what each MCP server provides:
 |---|---|
 | `filesystem` | Read/write to project files — persistent memory, persona files, progress tracking |
 | `jupyter` | Live blackboard — math rendering, code execution, plots, exercise notebooks |
-| `notebooklm-mcp` | Full-corpus knowledge retrieval — grounds teacher in complete textbook (optional) |
+| `notebooklm-mcp` | Full-corpus knowledge retrieval — grounds teacher in complete textbook |
 
 Restart Claude Desktop after editing. Before each study session, also start JupyterLab:
 ```bash
@@ -576,9 +576,9 @@ nlm login   # launches Chrome, cookies extracted automatically
 
 ### 11.4 Three Operating Modes
 
-**Passive (default):** Claude teaches from the loaded chapter file. NLM is called only for cross-chapter fact verification or questions beyond the loaded section (~3–5 calls per session).
+**Passive (default):** Claude teaches from the loaded chapter file. NLM is called at session start for a briefing, for cross-chapter fact verification, and for questions beyond the loaded section (~3–5 calls per session).
 
-**Active:** For large corpora (500+ pages). Each session begins with a `notebook_query` briefing of the target section. No chapter file loaded into context.
+**Active:** For large corpora (500+ pages). Each session begins with a `notebook_query` briefing of the target section. NLM is queried at each topic transition. No chapter file loaded into context.
 
 **Artifact mode:** After completing a chapter — `studio_create` for flashcards or study guides; `download_artifact` saves them to `teacher/artifacts/`.
 
@@ -587,7 +587,7 @@ nlm login   # launches Chrome, cookies extracted automatically
 ```
 ## NotebookLM Integration
 NOTEBOOKLM_NOTEBOOK_ID: <paste-uuid-here>
-NLM_MODE: passive   # passive | active | off
+NLM_MODE: passive   # passive | active
 
 Rules for passive mode:
 - Call notebook_query only for cross-chapter facts, formula verification,
@@ -692,12 +692,11 @@ course_material/ — all teaching must be grounded here.
 ## Settings
 ACTIVE_PERSONA: [name]
 MULTI_PERSONA: false
-JUPYTER_ENABLED: true
 JUPYTER_NOTEBOOK_PATH: blackboard/session_{date}.ipynb
 
 ## NotebookLM Integration
 NOTEBOOKLM_NOTEBOOK_ID: [paste uuid here, or leave blank]
-NLM_MODE: off
+NLM_MODE: passive
 ```
 
 ---
