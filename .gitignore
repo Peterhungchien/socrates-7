@@ -7,7 +7,7 @@ teacher/temp/*
 # Jupyter
 .ipynb_checkpoints/
 blackboard/*.ipynb
-blackboard/exercises/*.ipynb
+exercises/*.ipynb
 
 # OS
 .DS_Store

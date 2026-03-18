@@ -120,7 +120,7 @@ Follow the setup checklist in [`teacher/notebooklm.md`](teacher/notebooklm.md) t
 socrates-7/
   ├── course_material/           ← Your textbooks, notes, PDFs
   ├── blackboard/                ← Jupyter notebooks (the live blackboard)
-  │   └── exercises/             ← Exercise notebooks extracted after sessions
+  ├── exercises/                 ← Exercise notebooks extracted after sessions
   ├── teacher/                   ← System files (the brain)
   │   ├── system.md              ← Master boot file — read first every session
   │   ├── system_detail.md       ← Extended rules and edge cases

@@ -100,8 +100,8 @@ project-root/
   │   ├── chapter_02.md
   │   └── ... (or .pdf files)
   ├── blackboard/                ← Jupyter notebooks (the live blackboard)
-  │   ├── session_YYYY-MM-DD.ipynb  ← One notebook per session (auto-created)
-  │   └── exercises/             ← Saved exercise notebooks for learner
+  │   └── session_YYYY-MM-DD_[short_title].ipynb  ← One notebook per session (auto-created)
+  ├── exercises/                 ← Saved exercise notebooks for learner
   └── teacher/                   ← Socrates-7 system folder
       ├── system.md              ← Master boot file (read first every session)
       ├── system_detail.md       ← Extended config & edge-case rules
@@ -132,7 +132,7 @@ project-root/
 | `book_revision_notes.md` | Noted gaps or improvements to source material discovered during teaching. |
 | `notebooklm.md` | NLM notebook ID, source-to-chapter mapping, artifact IDs. Only present when NLM integration is enabled. |
 | `blackboard/session_*.ipynb` | Live session notebook. Created fresh each session. Teacher writes to it during the lesson; learner watches it update in JupyterLab. |
-| `blackboard/exercises/` | Exercise notebooks saved for the learner after the session ends. Skeleton code for independent practice. |
+| `exercises/` | Exercise notebooks saved for the learner after the session ends. Skeleton code for independent practice. |
 | `temp/` | Temporary files. Auto-deleted at session end. |
 
 ---
@@ -163,7 +163,7 @@ the notebook update in real time in their browser.
 6. Read `knowledge_gaps.md` and identify 1–2 gaps to revisit this session.
 7. Read `group_chat_unread.md` if it has content; prepare to show it when learner says "open chat".
 8. **Verify the Jupyter kernel:** call `list_kernels`. If no kernel is running, say in persona: *"Before we start — could you open JupyterLab? I'd like to use the blackboard today."* Wait for confirmation.
-9. **Create the session notebook:** call `use_notebook` with path `blackboard/session_YYYY-MM-DD.ipynb`. Insert a markdown title cell: `# Session [N] — [Topic] — [Persona Name]`.
+9. **Create the session notebook:** pick a short descriptive title (2–4 words, snake_case) based on the session's main topic. Call `use_notebook` with path `blackboard/session_YYYY-MM-DD_[short_title].ipynb`. Insert a markdown title cell: `# Session [N] — [Topic] — [Persona Name]`.
 10. Greet the learner in the teacher persona's voice, referencing the last session's topic naturally.
 11. Ask if the learner wants to review anything from last time before continuing.
 
@@ -198,7 +198,7 @@ After the learner signals end of session, Claude Desktop must automatically:
 
 1. **Record session end time:** run `date` in the sandbox shell. Compute duration from `SESSION_START`. Format: `HH:MM`.
 2. **Close the blackboard:** insert a final markdown cell: `## End of Session — [summary line]`.
-3. **Extract exercises:** copy any `[EXERCISE]`-prefixed cells into a new skeleton notebook at `blackboard/exercises/ex_[topic]_[date].ipynb`, replacing solution code with `# TODO` comments.
+3. **Extract exercises:** copy any `[EXERCISE]`-prefixed cells into a new skeleton notebook at `exercises/ex_[topic]_[date].ipynb`, replacing solution code with `# TODO` comments.
 4. Update `progress.md` with the exact section completed and a one-line summary.
 5. Append a session summary to `session_log.md` — include: date, start time, end time, duration, teacher, topics, learner performance, one memorable moment, path to session notebook.
 6. Update `knowledge_gaps.md` — add newly observed gaps, mark resolved ones.
@@ -543,7 +543,7 @@ Paste this PRD into Claude Desktop and say: *"Build the Socrates-7 system for me
 - **Adding a new teacher:** `SYSTEM: Add a new teacher named [X]` — generates a new persona file including a `blackboard_style` field.
 - **Adding course material:** Drop new files in `course_material/`; integrated into `progress.md` on next session.
 - **Reviewing a past session:** Ask Claude Desktop to `use_notebook` on any `blackboard/session_*.ipynb` and walk through it.
-- **Post-course review:** Ask for a final report compiled from `session_log.md`, `knowledge_gaps.md`, and the list of exercise notebooks in `blackboard/exercises/`.
+- **Post-course review:** Ask for a final report compiled from `session_log.md`, `knowledge_gaps.md`, and the list of exercise notebooks in `exercises/`.
 
 ---
 
@@ -643,7 +643,7 @@ On auth failure:
 | Session time tracking | `date` run at session open and close; duration recorded in `session_log.md` in 100% of sessions |
 | Knowledge gap resolution | Gaps marked resolved only after learner correctly answers 2 review questions |
 | Hallucination rate | < 5% of factual claims not traceable to source material (spot-checked) |
-| Exercise extraction | Every session with code content produces at least 1 exercise notebook in `blackboard/exercises/` |
+| Exercise extraction | Every session with code content produces at least 1 exercise notebook in `exercises/` |
 
 ---
 
@@ -705,7 +705,7 @@ course_material/ — all teaching must be grounded here.
 ## Settings
 ACTIVE_PERSONA: [name]
 MULTI_PERSONA: false
-JUPYTER_NOTEBOOK_PATH: blackboard/session_{date}.ipynb
+JUPYTER_NOTEBOOK_PATH: blackboard/session_{date}_{short_title}.ipynb
 
 ## NotebookLM Integration
 NOTEBOOKLM_NOTEBOOK_ID: [paste uuid here, or leave blank]

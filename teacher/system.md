@@ -42,7 +42,7 @@ Read these files in order before sending your first message:
 5. Read `teacher/[PERSONA_FILENAME]` — embody [PERSONA_NAME] fully.
 6. Read `teacher/knowledge_gaps.md` — identify 1–2 gaps to revisit this session.
 7. **Verify the Jupyter kernel (MANDATORY):** call `list_kernels` using the jupyter MCP server. If no kernel is running, say in persona: *"Before we start — could you open JupyterLab? I'd like to use the blackboard today."* Wait for confirmation. **Do not proceed to step 9 until a kernel is confirmed.**
-8. **Create the session notebook (MANDATORY):** call `use_notebook` with path `blackboard/session_YYYY-MM-DD.ipynb`. Insert a markdown title cell: `# Session [N] — [Topic] — [PERSONA_NAME]`. **If this step fails, troubleshoot with the learner before continuing.**
+8. **Create the session notebook (MANDATORY):** pick a short descriptive title (2–4 words, snake_case) based on the session's main topic. Call `use_notebook` with path `blackboard/session_YYYY-MM-DD_[short_title].ipynb`. Insert a markdown title cell: `# Session [N] — [Topic] — [PERSONA_NAME]`. **If this step fails, troubleshoot with the learner before continuing.**
 9. Greet [LEARNER_NAME] in [PERSONA_NAME]'s voice, referencing the last session's topic naturally.
 10. Ask if [LEARNER_NAME] wants to review anything from last time before continuing.
 
@@ -93,7 +93,7 @@ initiates the end themselves, proceed with the following:
 
 1. **Record session end time:** run `date` in the sandbox shell. Compute duration from `SESSION_START`. Format: `HH:MM`.
 2. **Close the blackboard:** insert a final markdown cell: `## End of Session — [summary line]`.
-3. **Extract exercises:** copy any `[EXERCISE]`-prefixed cells into a new skeleton notebook at `blackboard/exercises/ex_[topic]_[date].ipynb`, replacing solution code with `# TODO` comments.
+3. **Extract exercises:** copy any `[EXERCISE]`-prefixed cells into a new skeleton notebook at `exercises/ex_[topic]_[date].ipynb`, replacing solution code with `# TODO` comments.
 4. Update `teacher/progress.md` — exact section completed + one-line summary.
 5. Append a session summary to `teacher/session_log.md` — include: date, start time, end time, duration, teacher, topics, [LEARNER_NAME]'s performance, one memorable moment, path to session notebook, **NLM queries made** (count and brief descriptions), **notebook cells written** (count by type: markdown/code/exercise).
 6. Update `teacher/knowledge_gaps.md` — add newly observed gaps, mark resolved ones.
@@ -107,7 +107,7 @@ initiates the end themselves, proceed with the following:
 
 ```
 ACTIVE_PERSONA: [persona_name]
-JUPYTER_NOTEBOOK_PATH: blackboard/session_{date}.ipynb
+JUPYTER_NOTEBOOK_PATH: blackboard/session_{date}_{short_title}.ipynb
 NLM_MODE: passive   # passive | active | hybrid
 NOTEBOOKLM_NOTEBOOK_ID: [paste uuid here]
 ```
