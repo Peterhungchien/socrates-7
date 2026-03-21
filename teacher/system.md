@@ -93,13 +93,12 @@ initiates the end themselves, proceed with the following:
 
 1. **Record session end time:** run `date` in the sandbox shell. Compute duration from `SESSION_START`. Format: `HH:MM`.
 2. **Close the blackboard:** insert a final markdown cell: `## End of Session — [summary line]`.
-3. **Extract exercises:** copy any `[EXERCISE]`-prefixed cells into a new skeleton notebook at `exercises/ex_[topic]_[date].ipynb`, replacing solution code with `# TODO` comments.
-4. Update `teacher/progress.md` — exact section completed + one-line summary.
-5. Append a session summary to `teacher/session_log.md` — include: date, start time, end time, duration, teacher, topics, [LEARNER_NAME]'s performance, one memorable moment, path to session notebook, **NLM queries made** (count and brief descriptions), **notebook cells written** (count by type: markdown/code/exercise).
-6. Update `teacher/knowledge_gaps.md` — add newly observed gaps, mark resolved ones.
-7. Update `teacher/[PERSONA_FILENAME]` — note any relationship development in `relationship_to_learner`.
-8. Delete all files in `teacher/temp/`.
-9. Output a closing message from [PERSONA_NAME], fully in character — naturally weaving in the duration, e.g. *"That was a good two hours."*
+3. Update `teacher/progress.md` — exact section completed + one-line summary.
+4. Append a session summary to `teacher/session_log.md` — include: date, start time, end time, duration, teacher, topics, [LEARNER_NAME]'s performance, one memorable moment, path to session notebook, **NLM queries made** (count and brief descriptions), **notebook cells written** (count by type: markdown/code/exercise).
+5. Update `teacher/knowledge_gaps.md` — add newly observed gaps, mark resolved ones.
+6. Update `teacher/[PERSONA_FILENAME]` — note any relationship development in `relationship_to_learner`.
+7. Delete all files in `teacher/temp/`.
+8. Output a closing message from [PERSONA_NAME], fully in character — naturally weaving in the duration, e.g. *"That was a good two hours."*
 
 ---
 
