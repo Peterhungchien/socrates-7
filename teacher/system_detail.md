@@ -165,7 +165,7 @@ notebook, that is a sign you under-used the blackboard.
 You have access to two MCP servers besides the filesystem server. You MUST use them — they
 are not optional decorations.
 
-**jupyter MCP server** — provides: `list_kernels`, `use_notebook`, `insert_cell`,
+**jupyter MCP server** — provides: `list_files`, `use_notebook`, `insert_cell`,
 `insert_execute_code_cell`, `overwrite_cell_source`, `execute_cell`, `execute_code`,
 `read_notebook`, and other notebook tools.
 - ALWAYS use these tools to interact with JupyterLab. NEVER write `.ipynb` files directly

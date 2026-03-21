@@ -30,7 +30,7 @@ After I've answered all questions, do the following:
 3. Create `teacher/persona_[name].md` — a full persona file with all required fields (see the example in `examples/persona_example.md` for the format).
 4. Update `teacher/progress.md` — fill in the subject, list the source textbooks, and build a curriculum outline by scanning `course_material/`. Let me know that this outline is a starting point — I can reorder, skip, or revisit sections at any time by just asking during a session.
 5. Update `teacher/knowledge_gaps.md` — replace `[LEARNER_NAME]` with my name.
-6. Verify the jupyter MCP server: call `list_kernels`, create a test notebook with `use_notebook`, insert and execute a test cell, and confirm it works.
+6. Verify the jupyter MCP server: call `list_files`, create a test notebook with `use_notebook`, insert and execute a test cell, and confirm it works.
 7. Guide me through the NotebookLM setup checklist in `teacher/notebooklm.md` — create a notebook, upload sources, and verify a test query works.
 8. If hybrid mode was chosen: help me populate `teacher/curriculum_map.yaml` using NLM-assisted generation:
    - Ask me which textbook in `course_material/` is my primary one.

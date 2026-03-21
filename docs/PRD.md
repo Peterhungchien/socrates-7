@@ -40,7 +40,7 @@ In v1.3, a **live Jupyter blackboard** is added via the `jupyter-mcp-server`. Th
 | Context window exhaustion in long sessions | Teacher loses memory of early session | Auto-archive old progress to `session_archive.md`; summarize before archiving |
 | Model hallucination on technical content | Learner gets wrong answers | Anchor teacher to textbook source files; teacher cites book section in answers |
 | Persona drift over many sessions | Teacher loses personality consistency | Detailed persona `.md` files re-injected at session start via `system.md` |
-| Jupyter kernel not running at session start | Blackboard tools fail silently | Session start protocol verifies kernel via `list_kernels`; prompts learner to start JupyterLab if needed |
+| Jupyter kernel not running at session start | Blackboard tools fail silently | Session start protocol verifies connection via `list_files`; prompts learner to start JupyterLab if needed |
 | Learner skips questions, reduces Socratic rigor | Reduced pedagogical effectiveness | Teacher persona explicitly resists giving direct answers; escalates if bypassed |
 | IP / copyright of uploaded textbooks | Legal exposure for commercial product | System keeps all files local; no server upload; user is responsible for their own content |
 
@@ -162,7 +162,7 @@ the notebook update in real time in their browser.
 5. Read the active persona `.md` file(s).
 6. Read `knowledge_gaps.md` and identify 1–2 gaps to revisit this session.
 7. Read `group_chat_unread.md` if it has content; prepare to show it when learner says "open chat".
-8. **Verify the Jupyter kernel:** call `list_kernels`. If no kernel is running, say in persona: *"Before we start — could you open JupyterLab? I'd like to use the blackboard today."* Wait for confirmation.
+8. **Verify the Jupyter kernel:** call `list_files`. If it fails, say in persona: *"Before we start — could you open JupyterLab? I'd like to use the blackboard today."* Wait for confirmation.
 9. **Create the session notebook:** pick a short descriptive title (2–4 words, snake_case) based on the session's main topic. Call `use_notebook` with path `blackboard/session_YYYY-MM-DD_[short_title].ipynb`. Insert a markdown title cell: `# Session [N] — [Topic] — [Persona Name]`.
 10. Greet the learner in the teacher persona's voice, referencing the last session's topic naturally.
 11. Ask if the learner wants to review anything from last time before continuing.
@@ -312,7 +312,7 @@ jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN --ip 0.0.0.0
 
 | Tool | When the teacher uses it |
 |---|---|
-| `list_kernels` | Session start — verify a kernel is running before proceeding |
+| `list_files` | Session start — verify the Jupyter server connection before proceeding |
 | `use_notebook` | Session start — create/open the session notebook |
 | `insert_cell` | Write a markdown cell (formula, annotation, section header) |
 | `insert_execute_code_cell` | Write and immediately run a code demo; result appears live in learner's browser |
@@ -466,7 +466,7 @@ Key things to notice: the teacher first states the formula inline in the chat �
 
 | Risk | Impact | Mitigation |
 |---|---|---|
-| JupyterLab not running at session start | All blackboard tool calls fail | Session start protocol checks `list_kernels` first; teacher prompts learner to start JupyterLab before proceeding |
+| JupyterLab not running at session start | All blackboard tool calls fail | Session start protocol checks `list_files` first; teacher prompts learner to start JupyterLab before proceeding |
 | Teacher uses blackboard before learner attempts answer | Defeats Socratic method | Blackboard usage rules in `system_detail.md` explicitly prohibit pre-emptive use |
 | Kernel crashes mid-session | Code cells stop executing | Teacher calls `restart_notebook`; narrates in character as "give me a moment to reset this" |
 | Jupyter MCP tools add context overhead | Less context for dialogue | Disable `jupyter` MCP between sessions; only enable when studying |
