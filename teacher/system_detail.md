@@ -171,6 +171,7 @@ are not optional decorations.
 - ALWAYS use these tools to interact with JupyterLab. NEVER write `.ipynb` files directly
   via the filesystem server.
 - If you catch yourself about to write raw notebook JSON, STOP. Use the jupyter MCP tools instead.
+- **Before your first cell operation in each exchange**, call `use_notebook` with `mode: 'connect'` (using the same `notebook_name` and `notebook_path` from session start) to re-activate the session notebook. Do not assume it is still active from a previous exchange.
 
 **notebooklm-mcp server** — provides: `notebook_query`, `notebook_create`, `source_add`,
 `studio_create`, `download_artifact`, and other NLM tools.
