@@ -71,7 +71,7 @@ notes: |
   Focus on activation functions and vanishing gradients.
 ```
 
-See `examples/meta.yaml` for a full example.
+See `skills/scaffold-project/examples/meta.yaml` for a full example.
 
 ## Installation
 
@@ -194,16 +194,16 @@ create-teacher    ->  scaffold-project  ->  teaching-session  (repeat)
 knowledge-base    <-  invoked by teaching-session + user queries
 ```
 
-## Reference Files
+## Skill Supporting Files
 
-These files in the repo are templates the skills reference:
+Each skill directory contains its own examples and scripts:
 
-- `examples/persona_example.md` — example teacher persona (Linus)
-- `examples/learner_profile_example.md` — example learner profile
-- `examples/meta.yaml` — annotated meta.yaml with all fields
-- `teacher/system.md` — original monolithic system prompt (reference only)
-- `teacher/system_detail.md` — original extended rules (reference only)
-- `docs/init_prompt.md` — original initialization prompt (reference only)
+- `skills/create-teacher/examples/persona_example.md` — example teacher persona (Linus)
+- `skills/create-teacher/examples/learner_profile_example.md` — example learner profile
+- `skills/scaffold-project/examples/meta.yaml` — annotated meta.yaml with all fields
+- `skills/scaffold-project/scripts/split_pdf.py` — PDF splitter for hybrid NLM mode
+- `skills/scaffold-project/notebooklm_setup.md` — NotebookLM setup checklist
+- `skills/teaching-session/session-protocol.md` — detailed Socratic protocol rules
 
 ## License
 
