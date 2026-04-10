@@ -1,0 +1,22 @@
+# Example Knowledge Point — meta.yaml
+# Place this file inside a lesson directory (e.g., deep-learning/multi-layer-networks/).
+# The scaffold-project skill generates stubs like this for each lesson.
+
+# REQUIRED FIELDS
+name: "Multi-Layer Networks"
+description: "Feedforward networks with hidden layers; universal approximation theorem"
+status: not-started   # not-started | in-progress | reviewed | mastered
+depends:
+  - "Linear Algebra Basics"
+  - "Gradient Descent"
+
+# OPTIONAL FIELDS — add freely, the schema is open
+tags: [neural-networks, deep-learning]
+sources:
+  - "course_material/deep_learning.pdf, Ch. 6 (pp. 163-190)"
+created: 2026-04-09
+last_reviewed: null    # set by teaching-session skill at session end
+review_count: 0        # incremented by teaching-session skill at session end
+notes: |
+  Focus on activation functions and the vanishing gradient problem.
+  Connect to backpropagation before moving to CNNs.
