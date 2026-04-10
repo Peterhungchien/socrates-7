@@ -1,35 +1,100 @@
 # Socrates-7
 
-An AI-powered Socratic learning system for Claude Desktop.
+A collection of Claude skills that scaffold and manage AI-powered Socratic learning.
 
 ## What This Is
 
-Socrates-7 transforms any textbook or course material into an interactive Socratic dialogue. A persistent AI teacher persona guides you through the material purely by asking questions — never lecturing directly — while all session history, progress, and persona state are recorded in Markdown files across conversations.
+Socrates-7 is a **skills repo** — not a learning project itself. It provides four Claude
+skills that you install once and use across any number of learning projects. Each skill
+handles a distinct part of the learning workflow:
 
-A live Jupyter notebook serves as a blackboard for formulas, code demos, and exercises, while NotebookLM provides full-corpus knowledge retrieval to keep teaching grounded in your actual textbooks. See [docs/PRD.md](docs/PRD.md) for the full specification.
+| Skill | Purpose |
+|-------|---------|
+| `create-teacher` | Design a teacher persona and learner profile |
+| `scaffold-project` | Set up a learning project from a textbook or course |
+| `teaching-session` | Run a full Socratic study session |
+| `knowledge-base` | Navigate prerequisites and learning status |
+
+Your actual learning lives in a separate directory that the skills create and manage.
+
+## How It Works
+
+```
+my-learning/                        ← your learning root (anywhere on disk)
+  teacher/                          ← created by create-teacher
+    persona_linus.md
+    learner_profile.md
+    session_log.md
+    knowledge_gaps.md
+  deep-learning/                    ← created by scaffold-project
+    course_material/
+    progress.md
+    curriculum_map.yaml
+    multi-layer-networks/           ← one directory per lesson
+      meta.yaml                     ← knowledge point metadata
+      session_2026-04-09.ipynb      ← session notebook lives with the lesson
+    backpropagation/
+      meta.yaml
+  t-distribution-review/            ← ad-hoc standalone (user creates manually)
+    meta.yaml
+    material.pdf
+    session_2026-04-10.ipynb
+```
+
+Every lesson directory has a `meta.yaml` that tracks its status, dependencies, and
+review history. The knowledge graph is discovered by searching all `meta.yaml` files —
+no index, no fixed structure.
+
+## meta.yaml Schema
+
+Required fields:
+
+```yaml
+name: "Multi-Layer Networks"
+description: "Feedforward networks with hidden layers, universal approximation"
+status: not-started   # not-started | in-progress | reviewed | mastered
+depends:
+  - "Linear Algebra Basics"   # matched by name, not path
+  - "Gradient Descent"
+```
+
+Optional fields (extend freely):
+
+```yaml
+tags: [neural-networks, deep-learning]
+sources:
+  - "course_material/deep_learning.pdf, Ch. 6"
+created: 2026-04-09
+last_reviewed: null
+review_count: 0
+notes: |
+  Focus on activation functions and vanishing gradients.
+```
+
+See `examples/meta.yaml` for a full example.
+
+## Installation
+
+```bash
+# Clone the repo
+git clone <repo-url> ~/.claude/skills/socrates-7
+
+# Symlink the skills so Claude can find them
+ln -s ~/.claude/skills/socrates-7/skills/create-teacher ~/.claude/skills/
+ln -s ~/.claude/skills/socrates-7/skills/scaffold-project ~/.claude/skills/
+ln -s ~/.claude/skills/socrates-7/skills/teaching-session ~/.claude/skills/
+ln -s ~/.claude/skills/socrates-7/skills/knowledge-base ~/.claude/skills/
+```
 
 ## Prerequisites
 
-- [Claude Desktop](https://claude.ai/download) with Claude Opus or Sonnet
-- [Filesystem MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem) — gives Claude read/write access to the project files
-- [Jupyter MCP server](https://github.com/datalayer/jupyter-mcp-server) — live notebook blackboard for formulas, code demos, and exercises
-- [NotebookLM MCP CLI](https://github.com/jacob-bd/notebooklm-mcp-cli) — full-corpus knowledge retrieval from your textbooks
+All three MCP servers are required for full functionality:
 
-## Quick Start
+- **Filesystem MCP server** — read/write access to your learning directory
+- **Jupyter MCP server** — live notebook blackboard for formulas, code demos, exercises
+- **NotebookLM MCP CLI** — full-corpus knowledge retrieval from your textbooks
 
-### 1. Clone this repo
-
-```bash
-git clone <repo-url> socrates-7
-cd socrates-7
-```
-
-### 2. Configure Claude Desktop
-
-Add the filesystem MCP server to your Claude Desktop config:
-
-**macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Linux:** `~/.config/Claude/claude_desktop_config.json`
+### Claude Desktop config
 
 ```json
 {
@@ -37,120 +102,7 @@ Add the filesystem MCP server to your Claude Desktop config:
     "filesystem": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-filesystem",
-               "/absolute/path/to/socrates-7"]
-    }
-  }
-}
-```
-
-Restart Claude Desktop after editing.
-
-### 3. Add your course material
-
-Drop your textbooks, notes, or PDFs into `course_material/`.
-
-### 4. Run the guided setup
-
-Open Claude Desktop and paste the contents of [`docs/init_prompt.md`](docs/init_prompt.md). Claude will interview you step by step — your background, learning goals, teacher persona preferences, and integration settings — then populate all template files automatically.
-
-### 5. Start studying
-
-Once setup is complete, open a new conversation in Claude Desktop and type:
-
-> "Let's study"
-
-Claude reads `teacher/system.md`, loads your persona and progress, and picks up where you left off.
-
-## Jupyter Blackboard
-
-The teacher writes formulas, runs code demos, and sets exercises in a live notebook that you see update in real time in your browser.
-
-**Install:**
-
-```bash
-# The mcp server calls the command `uvx`
-pip install uv
-uv --version
-# should be 0.6.14 or higher
-```
-
-**Start before each session:**
-
-```bash
-# Make sure Jupyter is available
-jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN
-```
-
-**Add to Claude Desktop config** (alongside the filesystem server):
-
-```json
-"jupyter": {
-  "command": "uvx",
-  "args": ["jupyter-mcp-server@latest"],
-  "env": {
-    "JUPYTER_URL": "http://localhost:8888",
-    "JUPYTER_TOKEN": "MY_TOKEN",
-    "ALLOW_IMG_OUTPUT": "true"
-  }
-}
-```
-
-The initialization prompt will ask about your preferred blackboard style (minimal, moderate, or rich).
-
-## NotebookLM Integration
-
-NotebookLM indexes your entire corpus and provides grounded, cited answers — acting as a reference librarian for the teacher. This ensures the teacher stays faithful to your actual textbooks rather than relying on parametric knowledge.
-
-**Install:**
-See <https://github.com/jacob-bd/notebooklm-mcp-cli?tab=readme-ov-file#installation>
-
-**Add to Claude Desktop config:**
-
-```json
-"notebooklm-mcp": {
-  "command": "notebooklm-mcp"
-}
-```
-
-Follow the setup checklist in [`teacher/notebooklm.md`](teacher/notebooklm.md) to create a notebook and upload sources.
-
-## File Structure
-
-```
-socrates-7/
-  ├── course_material/           ← Your textbooks, notes, PDFs
-  ├── blackboard/                ← Jupyter notebooks (the live blackboard)
-  ├── exercises/                 ← Exercise notebooks extracted after sessions
-  ├── teacher/                   ← System files (the brain)
-  │   ├── system.md              ← Master boot file — read first every session
-  │   ├── system_detail.md       ← Extended rules and edge cases
-  │   ├── persona_[name].md      ← Teacher persona definition
-  │   ├── learner_profile.md     ← Your background, goals, preferences
-  │   ├── progress.md            ← Where you are in the curriculum
-  │   ├── session_log.md         ← Running log of session summaries
-  │   ├── knowledge_gaps.md      ← Topics you struggled with (auto-tracked)
-  │   ├── notebooklm.md          ← NLM config and setup checklist
-  │   └── ...
-  ├── examples/                  ← Example files for reference
-  │   ├── persona_example.md     ← Sample teacher persona (Linus)
-  │   ├── learner_profile_example.md
-  │   └── sample_course_material.md
-  └── docs/
-      ├── PRD.md                 ← Full product requirements document
-      └── init_prompt.md         ← Paste into Claude Desktop for guided setup
-```
-
-## Full MCP Config Reference
-
-All three MCP servers are required for Socrates-7:
-
-```json
-{
-  "mcpServers": {
-    "filesystem": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem",
-               "/absolute/path/to/socrates-7"]
+               "/absolute/path/to/my-learning"]
     },
     "jupyter": {
       "command": "uvx",
@@ -167,6 +119,45 @@ All three MCP servers are required for Socrates-7:
   }
 }
 ```
+
+### Jupyter
+
+```bash
+pip install uv
+jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN
+```
+
+### NotebookLM MCP CLI
+
+See [notebooklm-mcp-cli installation](https://github.com/jacob-bd/notebooklm-mcp-cli?tab=readme-ov-file#installation).
+
+## First-Time Setup
+
+1. Create your learning directory (anywhere on disk)
+2. Open Claude Desktop with filesystem access to that directory
+3. Say: **"Set up my teacher"** → runs `create-teacher`
+4. Say: **"Scaffold a project for [textbook]"** → runs `scaffold-project`
+5. Say: **"Let's study [topic]"** → runs `teaching-session`
+
+## Workflow
+
+```
+create-teacher    →  scaffold-project  →  teaching-session  (repeat)
+(one-time setup)     (per textbook)       (each study session)
+
+knowledge-base    ←  invoked by teaching-session + user queries
+```
+
+## Reference Files
+
+These files in the repo are templates the skills reference:
+
+- `examples/persona_example.md` — example teacher persona (Linus)
+- `examples/learner_profile_example.md` — example learner profile
+- `examples/meta.yaml` — annotated meta.yaml with all fields
+- `teacher/system.md` — original monolithic system prompt (reference only)
+- `teacher/system_detail.md` — original extended rules (reference only)
+- `docs/init_prompt.md` — original initialization prompt (reference only)
 
 ## License
 
