@@ -1,5 +1,0 @@
-name: "Backpropagation"
-description: "Algorithm for computing gradients in neural networks"
-status: not-started
-depends:
-  - "Multi-Layer Networks"
