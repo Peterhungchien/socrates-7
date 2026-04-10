@@ -36,8 +36,8 @@
 - [ ] Run: `nlm login`
 - [ ] Create notebook: use `notebook_create` in Claude Desktop
 - [ ] Upload sources: use `source_add` for each file in `course_material/`
-- [ ] Copy notebook ID to `teacher/system.md` → `NOTEBOOKLM_NOTEBOOK_ID`
-- [ ] Set `NLM_MODE: passive`, `active`, or `hybrid` in `teacher/system.md`
+- [ ] Copy notebook ID into `curriculum_map.yaml` → `notebook_id` field
+- [ ] Set `nlm_mode: passive`, `active`, or `hybrid` in `curriculum_map.yaml`
 
 ---
 
@@ -48,5 +48,5 @@ The teacher MUST call `notebook_query` via the `notebooklm-mcp` server:
 - At each **topic transition** — before introducing new section content
 - For **cross-chapter lookups** and **formula verification** as needed
 
-See `teacher/system.md` for full NLM mode rules. If queries fail, the teacher must
-surface errors explicitly — never silently fall back to parametric knowledge.
+See the teaching-session skill's `session-protocol.md` for full NLM mode rules. If queries fail,
+the teacher must surface errors explicitly — never silently fall back to parametric knowledge.
