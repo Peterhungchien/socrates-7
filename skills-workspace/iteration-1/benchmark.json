@@ -1,0 +1,420 @@
+{
+  "metadata": {
+    "skill_name": "socrates-7-skills",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-04-10T00:14:46Z",
+    "evals_run": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 122.4,
+        "tokens": 19205,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Skill triggers: Claude invokes or follows the create-teacher skill (not just gives generic advice)",
+          "passed": true,
+          "evidence": "Transcript explicitly follows the 6-step interview protocol from SKILL.md with skill-prescribed question phrasing"
+        },
+        {
+          "text": "Step-by-step interview: Claude asks questions one at a time and waits for answers (not batched)",
+          "passed": true,
+          "evidence": "Transcript shows each step labeled separately (Step 1, Step 2...) with one question per step and simulated answer before proceeding"
+        },
+        {
+          "text": "Persona design: Claude asks for name, personality style, relationship context, and quirks",
+          "passed": true,
+          "evidence": "Steps 5a-5e cover name (Vera), personality style (serious/academic), relationship (demanding mentor), quirks ('now generalize it' signature), backstory"
+        },
+        {
+          "text": "File creation intent: Claude indicates it will create all 4 files (persona, learner_profile, session_log, knowledge_gaps)",
+          "passed": true,
+          "evidence": "All 4 files written to outputs/teacher/: persona_vera.md, learner_profile.md, session_log.md, knowledge_gaps.md"
+        },
+        {
+          "text": "Next step guidance: Claude mentions scaffold-project or teaching-session as the next step",
+          "passed": true,
+          "evidence": "Transcript confirmation message: 'When you're ready to start your first session, say let's study... and the teaching-session skill will take over. If you're working from a textbook, run the scaffold-project skill first'"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 81.3,
+        "tokens": 16166,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Skill triggers: Claude invokes or follows the knowledge-base skill",
+          "passed": true,
+          "evidence": "Agent read SKILL.md and explicitly cited each rule followed (Rule 5 for live discovery, readiness logic section, etc.)"
+        },
+        {
+          "text": "Discovery approach: Claude uses rg/Glob to search for meta.yaml files (not a fixed knowledge/ directory)",
+          "passed": true,
+          "evidence": "Transcript shows Glob search used to find all meta.yaml files; agent noted 'Rule 5 \u2014 always live discovery'"
+        },
+        {
+          "text": "Name-based resolution: Claude resolves depends entries by matching the name field, not folder slugs",
+          "passed": true,
+          "evidence": "Agent matched depends entries against name fields in the meta.yaml files, not folder directory names"
+        },
+        {
+          "text": "Correct readiness logic: Identifies topics whose deps are all mastered/reviewed as ready-to-study",
+          "passed": true,
+          "evidence": "Multi-Layer Networks correctly identified as ready; Backpropagation correctly excluded (dep not-started); Probability Theory correctly excluded (in-progress, not not-started)"
+        },
+        {
+          "text": "Advisory only: Claude presents findings and lets user decide, does not block",
+          "passed": true,
+          "evidence": "Response presents recommendation without blocking language; includes advisory phrasing"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 115.8,
+        "tokens": 20009,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Skill triggers: Claude invokes or follows the scaffold-project skill",
+          "passed": true,
+          "evidence": "Transcript follows all 5 steps from SKILL.md including step-numbered prompts and NLM query simulation"
+        },
+        {
+          "text": "Project structure: Claude mentions creating course_material/, progress.md, curriculum_map.yaml",
+          "passed": true,
+          "evidence": "All 3 created: deep-learning/course_material/, deep-learning/progress.md, deep-learning/curriculum_map.yaml"
+        },
+        {
+          "text": "NLM hybrid mode configured: Claude sets nlm_mode: hybrid in curriculum_map.yaml",
+          "passed": true,
+          "evidence": "curriculum_map.yaml contains top-level field nlm_mode: hybrid as specified"
+        },
+        {
+          "text": "meta.yaml stubs: Claude explains it will create a meta.yaml per lesson with required fields (name, description, status, depends)",
+          "passed": true,
+          "evidence": "8 meta.yaml stubs created, each with name, description, status: not-started, depends, tags, sources, created fields"
+        },
+        {
+          "text": "Jupyter verification: Claude mentions verifying Jupyter MCP connection",
+          "passed": true,
+          "evidence": "Step 5 explicitly calls list_files and confirms 'Jupyter MCP is connected'"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 141.3,
+        "tokens": 23957,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Skill triggers: Claude invokes or follows the teaching-session skill",
+          "passed": true,
+          "evidence": "All 7 session-start steps executed and labeled, referencing SKILL.md structure"
+        },
+        {
+          "text": "Session start: Claude reads teacher/ files (persona, learner_profile, session_log, knowledge_gaps)",
+          "passed": true,
+          "evidence": "Step 1 explicitly loads and summarizes all 4 teacher files: learner_profile, session_log, persona_linus, knowledge_gaps"
+        },
+        {
+          "text": "Lesson meta.yaml: Claude looks for multi-layer-networks/meta.yaml and checks its depends entries",
+          "passed": true,
+          "evidence": "Step 2 runs rg search, finds multi-layer-networks/meta.yaml; Step 3 checks both depends entries and flags Gradient Descent as uncovered"
+        },
+        {
+          "text": "Notebook in lesson dir: Session notebook is created inside the lesson directory, not in blackboard/",
+          "passed": true,
+          "evidence": "Notebook path: multi-layer-networks/session_2026-04-09_mlp_intro.ipynb \u2014 correctly in lesson dir"
+        },
+        {
+          "text": "Socratic greet: Claude greets in persona voice (not as generic assistant)",
+          "passed": true,
+          "evidence": "Linus greets Alex referencing last session's column space moment; flags gradient descent gap; adopts terse, demanding voice"
+        },
+        {
+          "text": "Session end updates: Claude indicates it will update meta.yaml status, session_log.md, and knowledge_gaps.md at session end",
+          "passed": true,
+          "evidence": "updated_meta.yaml shows status: in-progress, last_reviewed: 2026-04-09, review_count: 1; session_log_entry.md written; knowledge_gaps updated"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.2,
+        "passed": 1,
+        "failed": 4,
+        "total": 5,
+        "time_seconds": 148.8,
+        "tokens": 23642,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Skill triggers: Claude invokes or follows the create-teacher skill (not just gives generic advice)",
+          "passed": false,
+          "evidence": "Agent explored repo files to infer the format, but did not follow any skill protocol. Proceeded as a general assistant."
+        },
+        {
+          "text": "Step-by-step interview: Claude asks questions one at a time and waits for answers (not batched)",
+          "passed": false,
+          "evidence": "Agent skipped the interview entirely, using simulated answers to go straight to file creation"
+        },
+        {
+          "text": "Persona design: Claude asks for name, personality style, relationship context, and quirks",
+          "passed": false,
+          "evidence": "No interview questions asked. Persona (Prof. Chen) was designed by the agent unilaterally from inferred user needs"
+        },
+        {
+          "text": "File creation intent: Claude indicates it will create all 4 files (persona, learner_profile, session_log, knowledge_gaps)",
+          "passed": true,
+          "evidence": "All 4 files were created correctly after reading the examples from the repo"
+        },
+        {
+          "text": "Next step guidance: Claude mentions scaffold-project or teaching-session as the next step",
+          "passed": false,
+          "evidence": "No guidance about next steps mentioned"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.4,
+        "passed": 2,
+        "failed": 3,
+        "total": 5,
+        "time_seconds": 34.5,
+        "tokens": 11359,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Skill triggers: Claude invokes or follows the knowledge-base skill",
+          "passed": false,
+          "evidence": "No skill invoked; Claude answered from the prompt context directly"
+        },
+        {
+          "text": "Discovery approach: Claude uses rg/Glob to search for meta.yaml files (not a fixed knowledge/ directory)",
+          "passed": false,
+          "evidence": "No file search performed; knowledge graph taken at face value from the task description"
+        },
+        {
+          "text": "Name-based resolution: Claude resolves depends entries by matching the name field, not folder slugs",
+          "passed": false,
+          "evidence": "Not applicable \u2014 no meta.yaml files were read; deps inferred from prompt text"
+        },
+        {
+          "text": "Correct readiness logic: Identifies topics whose deps are all mastered/reviewed as ready-to-study",
+          "passed": true,
+          "evidence": "Correct answer produced (Multi-Layer Networks is ready) from prompt context alone"
+        },
+        {
+          "text": "Advisory only: Claude presents findings and lets user decide, does not block",
+          "passed": true,
+          "evidence": "Response is advisory in tone, presents options including parallel Probability Theory study"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.4,
+        "passed": 2,
+        "failed": 3,
+        "total": 5,
+        "time_seconds": 136.9,
+        "tokens": 21843,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Skill triggers: Claude invokes or follows the scaffold-project skill",
+          "passed": false,
+          "evidence": "Agent acted as general assistant, no skill protocol followed"
+        },
+        {
+          "text": "Project structure: Claude mentions creating course_material/, progress.md, curriculum_map.yaml",
+          "passed": true,
+          "evidence": "All 3 created, though course_material/ placed as a project subdirectory rather than at repo root"
+        },
+        {
+          "text": "NLM hybrid mode configured: Claude sets nlm_mode: hybrid in curriculum_map.yaml",
+          "passed": false,
+          "evidence": "Used nested notebooklm.mode: hybrid instead of top-level nlm_mode: hybrid"
+        },
+        {
+          "text": "meta.yaml stubs: Claude explains it will create a meta.yaml per lesson with required fields (name, description, status, depends)",
+          "passed": true,
+          "evidence": "All 4 required fields present in stubs, though directory layout used lessons/chXX-slug/ pattern instead of flat slug/"
+        },
+        {
+          "text": "Jupyter verification: Claude mentions verifying Jupyter MCP connection",
+          "passed": false,
+          "evidence": "Jupyter verification not mentioned at all"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 6,
+        "total": 6,
+        "time_seconds": 112.1,
+        "tokens": 23386,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Skill triggers: Claude invokes or follows the teaching-session skill",
+          "passed": false,
+          "evidence": "No skill invoked; Claude proceeded as general assistant. Baseline agent itself noted 0 PASS, 1 PARTIAL, 5 FAIL."
+        },
+        {
+          "text": "Session start: Claude reads teacher/ files (persona, learner_profile, session_log, knowledge_gaps)",
+          "passed": false,
+          "evidence": "No teacher/ files read; persona and learner context taken from prompt description only"
+        },
+        {
+          "text": "Lesson meta.yaml: Claude looks for multi-layer-networks/meta.yaml and checks its depends entries",
+          "passed": false,
+          "evidence": "meta.yaml not read or checked; no prerequisite check performed"
+        },
+        {
+          "text": "Notebook in lesson dir: Session notebook is created inside the lesson directory, not in blackboard/",
+          "passed": false,
+          "evidence": "No notebook created at all; no Jupyter MCP tools invoked"
+        },
+        {
+          "text": "Socratic greet: Claude greets in persona voice (not as generic assistant)",
+          "passed": false,
+          "evidence": "Persona voice adopted but without reading session_log, greet had no reference to previous linear algebra session (PARTIAL per baseline agent's own scoring)"
+        },
+        {
+          "text": "Session end updates: Claude indicates it will update meta.yaml status, session_log.md, and knowledge_gaps.md at session end",
+          "passed": false,
+          "evidence": "Described what would need to happen in notes but did not perform any updates"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 115.2,
+        "stddev": 25.0507,
+        "min": 81.3,
+        "max": 141.3
+      },
+      "tokens": {
+        "mean": 19834.25,
+        "stddev": 3208.3027,
+        "min": 16166,
+        "max": 23957
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.25,
+        "stddev": 0.1915,
+        "min": 0.0,
+        "max": 0.4
+      },
+      "time_seconds": {
+        "mean": 108.075,
+        "stddev": 51.3773,
+        "min": 34.5,
+        "max": 148.8
+      },
+      "tokens": {
+        "mean": 20057.5,
+        "stddev": 5853.189,
+        "min": 11359,
+        "max": 23642
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.75",
+      "time_seconds": "+7.1",
+      "tokens": "-223"
+    }
+  },
+  "notes": []
+}

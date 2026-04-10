@@ -1,0 +1,6 @@
+name: "Multi-Layer Networks"
+description: "Neural network architectures with hidden layers"
+status: not-started
+depends:
+  - "Linear Algebra Basics"
+  - "Gradient Descent"

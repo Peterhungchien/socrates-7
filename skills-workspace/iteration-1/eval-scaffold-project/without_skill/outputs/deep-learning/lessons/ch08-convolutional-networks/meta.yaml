@@ -1,0 +1,11 @@
+name: "Convolutional Networks"
+description: "Convolution operation, pooling, CNN architectures, equivariance, efficient convolutions."
+status: not-started
+depends:
+  - "Deep Feedforward Networks"
+tags: [cnn, computer-vision, convolutional, deep-learning]
+sources:
+  - "course_material/deep_learning_goodfellow.pdf, Ch. 9 (pp. 322-380)"
+created: 2026-04-09
+last_reviewed: null
+review_count: 0

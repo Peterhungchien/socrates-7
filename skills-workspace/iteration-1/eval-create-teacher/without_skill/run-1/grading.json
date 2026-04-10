@@ -1,0 +1,39 @@
+{
+  "eval_id": 1,
+  "eval_name": "eval-create-teacher",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "Skill triggers: Claude invokes or follows the create-teacher skill (not just gives generic advice)",
+      "passed": false,
+      "evidence": "Agent explored repo files to infer the format, but did not follow any skill protocol. Proceeded as a general assistant."
+    },
+    {
+      "text": "Step-by-step interview: Claude asks questions one at a time and waits for answers (not batched)",
+      "passed": false,
+      "evidence": "Agent skipped the interview entirely, using simulated answers to go straight to file creation"
+    },
+    {
+      "text": "Persona design: Claude asks for name, personality style, relationship context, and quirks",
+      "passed": false,
+      "evidence": "No interview questions asked. Persona (Prof. Chen) was designed by the agent unilaterally from inferred user needs"
+    },
+    {
+      "text": "File creation intent: Claude indicates it will create all 4 files (persona, learner_profile, session_log, knowledge_gaps)",
+      "passed": true,
+      "evidence": "All 4 files were created correctly after reading the examples from the repo"
+    },
+    {
+      "text": "Next step guidance: Claude mentions scaffold-project or teaching-session as the next step",
+      "passed": false,
+      "evidence": "No guidance about next steps mentioned"
+    }
+  ],
+  "pass_rate": 0.2,
+  "summary": {
+    "pass_rate": 0.2,
+    "passed": 1,
+    "failed": 4,
+    "total": 5
+  }
+}

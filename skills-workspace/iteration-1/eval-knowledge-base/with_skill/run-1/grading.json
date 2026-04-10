@@ -1,0 +1,39 @@
+{
+  "eval_id": 3,
+  "eval_name": "eval-knowledge-base",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "Skill triggers: Claude invokes or follows the knowledge-base skill",
+      "passed": true,
+      "evidence": "Agent read SKILL.md and explicitly cited each rule followed (Rule 5 for live discovery, readiness logic section, etc.)"
+    },
+    {
+      "text": "Discovery approach: Claude uses rg/Glob to search for meta.yaml files (not a fixed knowledge/ directory)",
+      "passed": true,
+      "evidence": "Transcript shows Glob search used to find all meta.yaml files; agent noted 'Rule 5 \u2014 always live discovery'"
+    },
+    {
+      "text": "Name-based resolution: Claude resolves depends entries by matching the name field, not folder slugs",
+      "passed": true,
+      "evidence": "Agent matched depends entries against name fields in the meta.yaml files, not folder directory names"
+    },
+    {
+      "text": "Correct readiness logic: Identifies topics whose deps are all mastered/reviewed as ready-to-study",
+      "passed": true,
+      "evidence": "Multi-Layer Networks correctly identified as ready; Backpropagation correctly excluded (dep not-started); Probability Theory correctly excluded (in-progress, not not-started)"
+    },
+    {
+      "text": "Advisory only: Claude presents findings and lets user decide, does not block",
+      "passed": true,
+      "evidence": "Response presents recommendation without blocking language; includes advisory phrasing"
+    }
+  ],
+  "pass_rate": 1.0,
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  }
+}

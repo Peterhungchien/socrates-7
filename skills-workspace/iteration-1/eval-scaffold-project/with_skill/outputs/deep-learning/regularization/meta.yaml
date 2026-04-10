@@ -1,0 +1,10 @@
+name: "Regularization for Deep Learning"
+description: "Techniques to reduce overfitting: L1/L2 penalties, dropout, batch normalization, data augmentation, and early stopping."
+status: not-started
+depends: ["Deep Feedforward Networks"]
+tags: [regularization, generalization, overfitting]
+sources:
+  - "deep_learning.pdf, 221-268"
+created: 2026-04-09
+last_reviewed: null
+review_count: 0

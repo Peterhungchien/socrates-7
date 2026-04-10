@@ -1,0 +1,12 @@
+name: "Machine Learning Basics"
+description: "Learning algorithms, capacity, overfitting, underfitting, regularization, hyperparameters, and bias-variance tradeoff."
+status: not-started
+depends:
+  - "Probability and Information Theory"
+  - "Numerical Computation"
+tags: [machine-learning, foundations, generalization]
+sources:
+  - "course_material/deep_learning_goodfellow.pdf, Ch. 5 (pp. 83-148)"
+created: 2026-04-09
+last_reviewed: null
+review_count: 0

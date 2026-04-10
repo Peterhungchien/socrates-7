@@ -1,0 +1,12 @@
+name: "Numerical Computation"
+description: "Overflow/underflow, gradient-based optimization, Jacobian and Hessian matrices, constrained optimization."
+status: not-started
+depends:
+  - "Linear Algebra"
+  - "Probability and Information Theory"
+tags: [math, numerical-methods, optimization]
+sources:
+  - "course_material/deep_learning_goodfellow.pdf, Ch. 4 (pp. 67-82)"
+created: 2026-04-09
+last_reviewed: null
+review_count: 0

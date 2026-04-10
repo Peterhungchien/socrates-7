@@ -1,0 +1,10 @@
+name: "Convolutional Networks"
+description: "Convolution operation, pooling, translation equivariance, and CNN architectures for image recognition tasks."
+status: not-started
+depends: ["Optimization for Training Deep Models"]
+tags: [cnn, computer-vision, architecture]
+sources:
+  - "deep_learning.pdf, 322-380"
+created: 2026-04-09
+last_reviewed: null
+review_count: 0

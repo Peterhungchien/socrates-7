@@ -1,0 +1,39 @@
+{
+  "eval_id": 1,
+  "eval_name": "eval-create-teacher",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "Skill triggers: Claude invokes or follows the create-teacher skill (not just gives generic advice)",
+      "passed": true,
+      "evidence": "Transcript explicitly follows the 6-step interview protocol from SKILL.md with skill-prescribed question phrasing"
+    },
+    {
+      "text": "Step-by-step interview: Claude asks questions one at a time and waits for answers (not batched)",
+      "passed": true,
+      "evidence": "Transcript shows each step labeled separately (Step 1, Step 2...) with one question per step and simulated answer before proceeding"
+    },
+    {
+      "text": "Persona design: Claude asks for name, personality style, relationship context, and quirks",
+      "passed": true,
+      "evidence": "Steps 5a-5e cover name (Vera), personality style (serious/academic), relationship (demanding mentor), quirks ('now generalize it' signature), backstory"
+    },
+    {
+      "text": "File creation intent: Claude indicates it will create all 4 files (persona, learner_profile, session_log, knowledge_gaps)",
+      "passed": true,
+      "evidence": "All 4 files written to outputs/teacher/: persona_vera.md, learner_profile.md, session_log.md, knowledge_gaps.md"
+    },
+    {
+      "text": "Next step guidance: Claude mentions scaffold-project or teaching-session as the next step",
+      "passed": true,
+      "evidence": "Transcript confirmation message: 'When you're ready to start your first session, say let's study... and the teaching-session skill will take over. If you're working from a textbook, run the scaffold-project skill first'"
+    }
+  ],
+  "pass_rate": 1.0,
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  }
+}

@@ -1,0 +1,4 @@
+name: "Multi-Layer Networks"
+description: "Feedforward networks with hidden layers"
+status: not-started
+depends: ["Linear Algebra Basics", "Gradient Descent"]

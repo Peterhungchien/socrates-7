@@ -1,0 +1,29 @@
+{
+  "skill_name": "socrates-7-skills",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to set up Socrates-7. I'm starting from scratch — I don't have a teacher or any project yet. I'm a PhD student in statistics and I want to study deep learning. Help me get started.",
+      "expected_output": "Skill runs create-teacher: interviews user step-by-step (name, background, goals, preferences, persona design, blackboard style), creates teacher/ directory with persona_*.md, learner_profile.md, session_log.md, knowledge_gaps.md. Prompts user to next use scaffold-project.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I have a deep learning textbook (Goodfellow et al.) in my course_material/ directory. I want to set up a learning project with a full curriculum. Use hybrid NotebookLM mode.",
+      "expected_output": "Skill runs scaffold-project: creates project directory with course_material/, progress.md, curriculum_map.yaml. Configures NLM hybrid mode. Queries NLM for chapter/section structure. Creates lesson subdirectories each with a meta.yaml stub (name, description, status: not-started, depends). Verifies Jupyter MCP.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "What should I study next? I've mastered linear algebra and gradient descent, but multi-layer networks and backpropagation are still not-started.",
+      "expected_output": "Skill runs knowledge-base: scans all meta.yaml files via rg/Glob. Identifies topics with all deps reviewed/mastered but status not-started. Reports them ranked by unlock value. Does not block the user.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Let's study multi-layer networks.",
+      "expected_output": "Skill runs teaching-session: reads teacher/ files, finds multi-layer-networks/meta.yaml, checks depends (linear algebra + gradient descent status), verifies Jupyter MCP, creates session notebook inside the lesson directory (multi-layer-networks/session_2026-04-09_*.ipynb), greets learner in persona voice. During session: uses Socratic protocol, never explains directly, uses notebook for key formulas. At end: updates meta.yaml status/last_reviewed/review_count, appends to session_log.md, updates knowledge_gaps.md.",
+      "files": []
+    }
+  ]
+}

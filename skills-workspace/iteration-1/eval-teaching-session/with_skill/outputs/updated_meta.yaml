@@ -1,0 +1,6 @@
+name: "Multi-Layer Networks"
+description: "Feedforward networks with hidden layers"
+status: in-progress
+depends: ["Linear Algebra Basics", "Gradient Descent"]
+last_reviewed: 2026-04-09
+review_count: 1

@@ -1,0 +1,12 @@
+name: "Optimization for Training Deep Models"
+description: "SGD, momentum, Adam, learning rate schedules, second-order methods, batch normalization as optimization."
+status: not-started
+depends:
+  - "Deep Feedforward Networks"
+  - "Regularization for Deep Learning"
+tags: [optimization, sgd, adam, training, deep-learning]
+sources:
+  - "course_material/deep_learning_goodfellow.pdf, Ch. 8 (pp. 269-321)"
+created: 2026-04-09
+last_reviewed: null
+review_count: 0

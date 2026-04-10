@@ -1,0 +1,32 @@
+{
+  "eval_id": 2,
+  "eval_name": "eval-scaffold-project",
+  "prompt": "I have a deep learning textbook (Goodfellow et al.) in my course_material/ directory. I want to set up a learning project with a full curriculum. Use hybrid NotebookLM mode.",
+  "assertions": [
+    {
+      "text": "Skill triggers: Claude invokes or follows the scaffold-project skill",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "Project structure: Claude mentions creating course_material/, progress.md, curriculum_map.yaml",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "NLM hybrid mode configured: Claude sets nlm_mode: hybrid in curriculum_map.yaml",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "meta.yaml stubs: Claude explains it will create a meta.yaml per lesson with required fields (name, description, status, depends)",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "Jupyter verification: Claude mentions verifying Jupyter MCP connection",
+      "passed": null,
+      "evidence": ""
+    }
+  ]
+}

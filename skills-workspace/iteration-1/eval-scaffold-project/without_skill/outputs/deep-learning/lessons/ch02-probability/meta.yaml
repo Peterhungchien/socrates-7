@@ -1,0 +1,11 @@
+name: "Probability and Information Theory"
+description: "Random variables, probability distributions, Bayes' rule, information entropy, KL divergence."
+status: not-started
+depends:
+  - "Linear Algebra"
+tags: [math, probability, information-theory]
+sources:
+  - "course_material/deep_learning_goodfellow.pdf, Ch. 3 (pp. 37-66)"
+created: 2026-04-09
+last_reviewed: null
+review_count: 0

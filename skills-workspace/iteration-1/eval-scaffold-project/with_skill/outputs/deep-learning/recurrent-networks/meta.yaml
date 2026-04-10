@@ -1,0 +1,10 @@
+name: "Sequence Modeling: Recurrent and Recursive Nets"
+description: "RNN architectures, BPTT, vanishing gradients, LSTMs, GRUs, and encoder-decoder models for sequential data."
+status: not-started
+depends: ["Convolutional Networks"]
+tags: [rnn, lstm, sequence-modeling, nlp]
+sources:
+  - "deep_learning.pdf, 381-444"
+created: 2026-04-09
+last_reviewed: null
+review_count: 0

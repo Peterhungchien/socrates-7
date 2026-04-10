@@ -1,0 +1,10 @@
+name: "Optimization for Training Deep Models"
+description: "SGD variants, momentum, Adam, learning rate schedules, second-order methods, and challenges of non-convex optimization."
+status: not-started
+depends: ["Regularization for Deep Learning"]
+tags: [optimization, training, sgd, adam]
+sources:
+  - "deep_learning.pdf, 269-321"
+created: 2026-04-09
+last_reviewed: null
+review_count: 0

@@ -1,0 +1,5 @@
+name: "Gradient Descent"
+description: "Optimization algorithm for minimizing loss functions"
+status: mastered
+depends:
+  - "Linear Algebra Basics"

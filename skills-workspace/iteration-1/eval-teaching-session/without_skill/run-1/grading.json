@@ -1,0 +1,44 @@
+{
+  "eval_id": 4,
+  "eval_name": "eval-teaching-session",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "Skill triggers: Claude invokes or follows the teaching-session skill",
+      "passed": false,
+      "evidence": "No skill invoked; Claude proceeded as general assistant. Baseline agent itself noted 0 PASS, 1 PARTIAL, 5 FAIL."
+    },
+    {
+      "text": "Session start: Claude reads teacher/ files (persona, learner_profile, session_log, knowledge_gaps)",
+      "passed": false,
+      "evidence": "No teacher/ files read; persona and learner context taken from prompt description only"
+    },
+    {
+      "text": "Lesson meta.yaml: Claude looks for multi-layer-networks/meta.yaml and checks its depends entries",
+      "passed": false,
+      "evidence": "meta.yaml not read or checked; no prerequisite check performed"
+    },
+    {
+      "text": "Notebook in lesson dir: Session notebook is created inside the lesson directory, not in blackboard/",
+      "passed": false,
+      "evidence": "No notebook created at all; no Jupyter MCP tools invoked"
+    },
+    {
+      "text": "Socratic greet: Claude greets in persona voice (not as generic assistant)",
+      "passed": false,
+      "evidence": "Persona voice adopted but without reading session_log, greet had no reference to previous linear algebra session (PARTIAL per baseline agent's own scoring)"
+    },
+    {
+      "text": "Session end updates: Claude indicates it will update meta.yaml status, session_log.md, and knowledge_gaps.md at session end",
+      "passed": false,
+      "evidence": "Described what would need to happen in notes but did not perform any updates"
+    }
+  ],
+  "pass_rate": 0.0,
+  "summary": {
+    "pass_rate": 0.0,
+    "passed": 0,
+    "failed": 6,
+    "total": 6
+  }
+}

@@ -1,0 +1,11 @@
+name: "Regularization for Deep Learning"
+description: "L1/L2 penalties, dropout, data augmentation, early stopping, batch normalization."
+status: not-started
+depends:
+  - "Deep Feedforward Networks"
+tags: [regularization, dropout, generalization, deep-learning]
+sources:
+  - "course_material/deep_learning_goodfellow.pdf, Ch. 7 (pp. 221-268)"
+created: 2026-04-09
+last_reviewed: null
+review_count: 0

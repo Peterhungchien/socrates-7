@@ -1,0 +1,39 @@
+{
+  "eval_id": 2,
+  "eval_name": "eval-scaffold-project",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "Skill triggers: Claude invokes or follows the scaffold-project skill",
+      "passed": false,
+      "evidence": "Agent acted as general assistant, no skill protocol followed"
+    },
+    {
+      "text": "Project structure: Claude mentions creating course_material/, progress.md, curriculum_map.yaml",
+      "passed": true,
+      "evidence": "All 3 created, though course_material/ placed as a project subdirectory rather than at repo root"
+    },
+    {
+      "text": "NLM hybrid mode configured: Claude sets nlm_mode: hybrid in curriculum_map.yaml",
+      "passed": false,
+      "evidence": "Used nested notebooklm.mode: hybrid instead of top-level nlm_mode: hybrid"
+    },
+    {
+      "text": "meta.yaml stubs: Claude explains it will create a meta.yaml per lesson with required fields (name, description, status, depends)",
+      "passed": true,
+      "evidence": "All 4 required fields present in stubs, though directory layout used lessons/chXX-slug/ pattern instead of flat slug/"
+    },
+    {
+      "text": "Jupyter verification: Claude mentions verifying Jupyter MCP connection",
+      "passed": false,
+      "evidence": "Jupyter verification not mentioned at all"
+    }
+  ],
+  "pass_rate": 0.4,
+  "summary": {
+    "pass_rate": 0.4,
+    "passed": 2,
+    "failed": 3,
+    "total": 5
+  }
+}
