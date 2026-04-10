@@ -79,29 +79,34 @@ See `examples/meta.yaml` for a full example.
 
 ```bash
 # Install as a Claude Code plugin directly from GitHub
-claude plugin install https://github.com/Peterhungchien/socrates-7-
+claude plugin install https://github.com/Peterhungchien/socrates-7
 ```
 
 Or install manually:
 
 ```bash
 # Clone into Claude's plugin cache
-git clone https://github.com/Peterhungchien/socrates-7-.git \
+git clone https://github.com/Peterhungchien/socrates-7.git \
   ~/.claude/plugins/cache/local/socrates-7/2.0.0
 ```
 
 ### Option B: `npx skills` CLI (for Claude Code, Cursor, Cline, and other agents)
 
 ```bash
-# Install the repo as a git dependency
-npm install Peterhungchien/socrates-7-
+# Install all skills from the GitHub repo
+npx skills add Peterhungchien/socrates-7
 
-# Install the skills into your agent's skills directory
-npx skills install
+# Or target a specific agent
+npx skills add Peterhungchien/socrates-7 -a claude-code
 ```
 
-This discovers all `skills/*/SKILL.md` files and symlinks them into `.claude/skills/`
-(or the equivalent for your agent).
+This fetches the repo from GitHub, discovers all `skills/*/SKILL.md` files, and
+symlinks them into your agent's skills directory (e.g. `.claude/skills/`).
+
+Other useful flags:
+- `--list` — list available skills before installing
+- `--all` — install every skill in the repo
+- `-g` — install globally
 
 ### Verify installation
 
