@@ -1,0 +1,19 @@
+{
+  "name": "socrates-7",
+  "description": "AI-powered Socratic learning skills — create teacher personas, scaffold learning projects, run Socratic sessions, and navigate a knowledge graph across all your learning",
+  "version": "2.0.0",
+  "author": {
+    "name": "Peter Hung-Chien"
+  },
+  "homepage": "https://github.com/Peterhungchien/socrates-7-",
+  "repository": "https://github.com/Peterhungchien/socrates-7-",
+  "license": "MIT",
+  "keywords": [
+    "learning",
+    "socratic",
+    "teaching",
+    "education",
+    "knowledge-graph",
+    "skills"
+  ]
+}
