@@ -20,22 +20,22 @@ Your actual learning lives in a separate directory that the skills create and ma
 ## How It Works
 
 ```
-my-learning/                        ← your learning root (anywhere on disk)
-  teacher/                          ← created by create-teacher
+my-learning/                        <- your learning root (anywhere on disk)
+  teacher/                          <- created by create-teacher
     persona_linus.md
     learner_profile.md
     session_log.md
     knowledge_gaps.md
-  deep-learning/                    ← created by scaffold-project
+  deep-learning/                    <- created by scaffold-project
     course_material/
     progress.md
     curriculum_map.yaml
-    multi-layer-networks/           ← one directory per lesson
-      meta.yaml                     ← knowledge point metadata
-      session_2026-04-09.ipynb      ← session notebook lives with the lesson
+    multi-layer-networks/           <- one directory per lesson
+      meta.yaml                     <- knowledge point metadata
+      session_2026-04-09.ipynb      <- session notebook lives with the lesson
     backpropagation/
       meta.yaml
-  t-distribution-review/            ← ad-hoc standalone (user creates manually)
+  t-distribution-review/            <- ad-hoc standalone (user creates manually)
     meta.yaml
     material.pdf
     session_2026-04-10.ipynb
@@ -75,26 +75,53 @@ See `examples/meta.yaml` for a full example.
 
 ## Installation
 
-```bash
-# Clone the repo
-git clone <repo-url> ~/.claude/skills/socrates-7
+### Option A: Claude Code (recommended)
 
-# Symlink the skills so Claude can find them
-ln -s ~/.claude/skills/socrates-7/skills/create-teacher ~/.claude/skills/
-ln -s ~/.claude/skills/socrates-7/skills/scaffold-project ~/.claude/skills/
-ln -s ~/.claude/skills/socrates-7/skills/teaching-session ~/.claude/skills/
-ln -s ~/.claude/skills/socrates-7/skills/knowledge-base ~/.claude/skills/
+```bash
+# Install as a Claude Code plugin directly from GitHub
+claude plugin install https://github.com/Peterhungchien/socrates-7-
 ```
 
-## Prerequisites
+Or install manually:
 
-All three MCP servers are required for full functionality:
+```bash
+# Clone into Claude's plugin cache
+git clone https://github.com/Peterhungchien/socrates-7-.git \
+  ~/.claude/plugins/cache/local/socrates-7/2.0.0
+```
 
-- **Filesystem MCP server** — read/write access to your learning directory
-- **Jupyter MCP server** — live notebook blackboard for formulas, code demos, exercises
-- **NotebookLM MCP CLI** — full-corpus knowledge retrieval from your textbooks
+### Option B: `npx skills` CLI (for Claude Code, Cursor, Cline, and other agents)
 
-### Claude Desktop config
+```bash
+# Install the repo as a git dependency
+npm install Peterhungchien/socrates-7-
+
+# Install the skills into your agent's skills directory
+npx skills install
+```
+
+This discovers all `skills/*/SKILL.md` files and symlinks them into `.claude/skills/`
+(or the equivalent for your agent).
+
+### Verify installation
+
+After installing via either method, confirm the skills are available:
+
+```bash
+# Claude Code
+claude skills list   # should show create-teacher, scaffold-project, etc.
+
+# Or check directly
+ls ~/.claude/skills/   # or your agent's skills directory
+```
+
+## MCP Servers
+
+Three MCP servers provide the infrastructure the skills use:
+
+### Filesystem MCP — read/write access to your learning directory
+
+Add to your Claude Code or Claude Desktop config:
 
 ```json
 {
@@ -103,7 +130,21 @@ All three MCP servers are required for full functionality:
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-filesystem",
                "/absolute/path/to/my-learning"]
-    },
+    }
+  }
+}
+```
+
+### Jupyter MCP — live notebook blackboard
+
+```bash
+pip install uv
+jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN
+```
+
+```json
+{
+  "mcpServers": {
     "jupyter": {
       "command": "uvx",
       "args": ["jupyter-mcp-server@latest"],
@@ -112,7 +153,18 @@ All three MCP servers are required for full functionality:
         "JUPYTER_TOKEN": "MY_TOKEN",
         "ALLOW_IMG_OUTPUT": "true"
       }
-    },
+    }
+  }
+}
+```
+
+### NotebookLM MCP — full-corpus knowledge retrieval
+
+See [notebooklm-mcp-cli](https://github.com/jacob-bd/notebooklm-mcp-cli?tab=readme-ov-file#installation) for installation.
+
+```json
+{
+  "mcpServers": {
     "notebooklm-mcp": {
       "command": "notebooklm-mcp"
     }
@@ -120,32 +172,21 @@ All three MCP servers are required for full functionality:
 }
 ```
 
-### Jupyter
-
-```bash
-pip install uv
-jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN
-```
-
-### NotebookLM MCP CLI
-
-See [notebooklm-mcp-cli installation](https://github.com/jacob-bd/notebooklm-mcp-cli?tab=readme-ov-file#installation).
-
 ## First-Time Setup
 
 1. Create your learning directory (anywhere on disk)
-2. Open Claude Desktop with filesystem access to that directory
-3. Say: **"Set up my teacher"** → runs `create-teacher`
-4. Say: **"Scaffold a project for [textbook]"** → runs `scaffold-project`
-5. Say: **"Let's study [topic]"** → runs `teaching-session`
+2. Open Claude Code or Claude Desktop with filesystem access to that directory
+3. Say: **"Set up my teacher"** — runs `create-teacher`
+4. Say: **"Scaffold a project for [textbook]"** — runs `scaffold-project`
+5. Say: **"Let's study [topic]"** — runs `teaching-session`
 
 ## Workflow
 
 ```
-create-teacher    →  scaffold-project  →  teaching-session  (repeat)
-(one-time setup)     (per textbook)       (each study session)
+create-teacher    ->  scaffold-project  ->  teaching-session  (repeat)
+(one-time setup)      (per textbook)        (each study session)
 
-knowledge-base    ←  invoked by teaching-session + user queries
+knowledge-base    <-  invoked by teaching-session + user queries
 ```
 
 ## Reference Files
