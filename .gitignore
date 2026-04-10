@@ -1,19 +1,10 @@
 # Socrates-7
 
-# Temporary session files
-teacher/temp/*
-!teacher/temp/.gitkeep
-
-# Jupyter
-.ipynb_checkpoints/
-blackboard/*.ipynb
-exercises/*.ipynb
-
 # OS
 .DS_Store
 Thumbs.db
 
-# Python (if using Jupyter locally)
+# Python
 __pycache__/
 *.pyc
 .venv/
