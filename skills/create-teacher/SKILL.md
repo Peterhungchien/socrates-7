@@ -14,8 +14,8 @@ description: >
 This skill sets up the `teacher/` directory by interviewing the user and producing four
 files: a persona spec, a learner profile, a session log, and a knowledge gaps tracker.
 
-**Templates to reference:** `examples/persona_example.md` and
-`examples/learner_profile_example.md` in the socrates-7 repo.
+**Templates to reference:** [persona_example.md](examples/persona_example.md) and
+[learner_profile_example.md](examples/learner_profile_example.md) in this skill directory.
 
 ---
 
@@ -78,7 +78,7 @@ and write these four files:
 
 ### `teacher/persona_[name].md`
 
-Follow the format in `examples/persona_example.md` exactly. Populate every field from
+Follow the format in [persona_example.md](examples/persona_example.md) exactly. Populate every field from
 the interview: Core Identity, Personality Core, Speech Patterns (with 3 example phrases
 you invent in their voice), Action Style (3–5 example actions), Backstory, Pedagogical
 Quirks, Blackboard Style, Emotional Triggers table, and Relationship to Learner
@@ -89,7 +89,7 @@ Use the style and backstory to derive concrete, idiosyncratic speech examples.
 
 ### `teacher/learner_profile.md`
 
-Follow the format in `examples/learner_profile_example.md`. Populate: name, background,
+Follow the format in [learner_profile_example.md](examples/learner_profile_example.md). Populate: name, background,
 current role/context, subject being studied, knowledge level, learning goals (numbered
 list), learning style notes (from preferences), and preferences. Leave "Learning Style
 Notes (Updated by the teacher over sessions)" with the initial observations from the
