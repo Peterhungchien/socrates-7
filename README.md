@@ -205,6 +205,12 @@ Each skill directory contains its own examples and scripts:
 - `skills/scaffold-project/notebooklm_setup.md` — NotebookLM setup checklist
 - `skills/teaching-session/session-protocol.md` — detailed Socratic protocol rules
 
+## Roadmap
+
+- **Boundary correction for PDF splitting** — use [liteparse](https://github.com/run-llama/liteparse) to verify and adjust page boundaries returned by NotebookLM, so section PDFs align with actual chapter/section starts and ends
+- **Per-project teacher** — allow each learning project to have its own teacher persona and learner profile, rather than sharing a single global teacher across all projects
+- **Structured memory system** — replace the current single-file memory with a structured approach (e.g. [mempalace](https://github.com/milla-jovovich/mempalace)) so cross-session recall of misconceptions, learning patterns, and concept connections scales beyond what a flat text file can support
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
