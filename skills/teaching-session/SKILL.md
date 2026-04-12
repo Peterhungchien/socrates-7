@@ -47,13 +47,43 @@ create-teacher skill first to set up your teacher and learner profile."
 
 ### 2. Identify the target lesson
 
-Parse the student prompt (from the skill argument) to extract the topic or intent. Then
-find the matching `meta.yaml`:
+Parse the student prompt (from the skill argument) to extract the topic or intent.
+
+**A. Scaffolded project session** — find the matching `meta.yaml`:
 - Search with `rg -l "^name:" --glob "*/meta.yaml" .`
 - Match the topic name to the `name` field of a `meta.yaml`
-- If no match, the session can still proceed without a `meta.yaml` (ad-hoc session)
 - If the prompt indicates continuation ("pick up where we left off", "continue"), use
   `session_log.md` to identify the last topic studied
+
+**B. Ad-hoc PDF session** — the student references a specific PDF file and topic (e.g.,
+"Let's study backpropagation from deep_learning.pdf") and no matching `meta.yaml` exists:
+
+1. Read the `pdf-intel` skill and run its **TOC extraction** operation on the PDF
+2. Match the student's topic to the best TOC entry by semantic similarity (e.g.,
+   "backpropagation" matches "6.5 Back-Propagation and Other Differentiation Algorithms")
+3. Determine the output location:
+   - If the student specified a directory in their prompt, use it
+   - Otherwise, create `<topic-slug>/` in the current working directory
+4. Invoke the `liteparse` skill to extract the section content:
+   ```bash
+   lit parse <pdf_path> --target-pages "<start>-<end>" --format text -o <topic-slug>/section_content.md
+   ```
+5. Create a minimal `<topic-slug>/meta.yaml`:
+   ```yaml
+   name: "<Section Title from TOC>"
+   description: "<One-line description>"
+   status: not-started
+   depends: []
+   sources:
+     - "<pdf_filename>, pages <start>-<end>"
+   created: <today's date>
+   last_reviewed: null
+   review_count: 0
+   ```
+6. Proceed with the session — the knowledge point now exists with source content
+
+**C. Ad-hoc session without PDF** — no matching `meta.yaml` and no PDF referenced.
+The session can still proceed without a `meta.yaml` (freeform ad-hoc session).
 
 ### 3. Check prerequisites (advisory)
 
