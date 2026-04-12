@@ -1,12 +1,11 @@
 ---
 name: teaching-session
 description: >
-  Use when the user wants to start a learning or study session, says "let's study",
-  asks to learn a specific topic, or continues from a previous session. Trigger on:
-  "let's study X", "teach me about X", "I want to learn X", "continue from last time",
-  "let's pick up where we left off", "session time", or any message that clearly signals
-  the user is ready to start studying. This is the core Socrates-7 skill — it runs the
-  full Socratic teaching session from start to finish.
+  Explicitly invoked skill — only use when the user calls /teaching-session directly.
+  Do not auto-trigger on conversational phrases. Accepts an argument: the student's
+  study prompt (e.g., /teaching-session "Let's continue studying backpropagation",
+  /teaching-session "I want to learn about activation functions"). Runs a full Socratic
+  teaching session from start to finish.
 ---
 
 # Teaching Session
@@ -16,6 +15,20 @@ This skill orchestrates a complete Socratic teaching session. It has three phase
 are in `session-protocol.md` — read that file now.
 
 > Read `session-protocol.md` from the same directory as this file before proceeding.
+
+---
+
+## Student Prompt
+
+This skill receives the student's study prompt as an argument. Examples:
+- `/teaching-session "Let's continue studying backpropagation"`
+- `/teaching-session "I want to learn about activation functions"`
+- `/teaching-session "Let's pick up where we left off"`
+
+Use this prompt to determine what the student wants to study and whether they're
+continuing a previous session or starting a new topic. The prompt drives topic
+identification in step 2 below. If no argument was provided, ask the student what
+they'd like to study before proceeding.
 
 ---
 
@@ -34,10 +47,13 @@ create-teacher skill first to set up your teacher and learner profile."
 
 ### 2. Identify the target lesson
 
-If the user named a specific topic, find the matching `meta.yaml`:
+Parse the student prompt (from the skill argument) to extract the topic or intent. Then
+find the matching `meta.yaml`:
 - Search with `rg -l "^name:" --glob "*/meta.yaml" .`
 - Match the topic name to the `name` field of a `meta.yaml`
 - If no match, the session can still proceed without a `meta.yaml` (ad-hoc session)
+- If the prompt indicates continuation ("pick up where we left off", "continue"), use
+  `session_log.md` to identify the last topic studied
 
 ### 3. Check prerequisites (advisory)
 
