@@ -8,7 +8,7 @@ Reads the curriculum map (default: teacher/curriculum_map.yaml), parses the
 YAML sections for textbook filenames and page ranges, and writes individual
 section PDFs to course_material/sections/.
 
-Requires: pip install pypdf pyyaml
+Requires: pip install pymupdf pyyaml
 """
 
 import argparse
@@ -17,14 +17,14 @@ import sys
 from pathlib import Path
 
 try:
-    from pypdf import PdfReader, PdfWriter
+    import pymupdf
 except ImportError:
-    sys.exit("Error: pypdf is not installed. Run: pip install pypdf pyyaml")
+    sys.exit("Error: pymupdf is not installed. Run: pip install pymupdf pyyaml")
 
 try:
     import yaml
 except ImportError:
-    sys.exit("Error: pyyaml is not installed. Run: pip install pypdf pyyaml")
+    sys.exit("Error: pyyaml is not installed. Run: pip install pymupdf pyyaml")
 
 
 def slugify(text: str) -> str:
@@ -36,14 +36,14 @@ def slugify(text: str) -> str:
 
 
 def split_pdf(
-    reader: PdfReader, start_page: int, end_page: int, output_path: Path
+    doc: pymupdf.Document, start_page: int, end_page: int, output_path: Path
 ) -> None:
     """Extract pages [start_page, end_page] (1-indexed) and write to output_path."""
-    writer = PdfWriter()
-    for i in range(start_page - 1, min(end_page, len(reader.pages))):
-        writer.add_page(reader.pages[i])
-    with open(output_path, "wb") as f:
-        writer.write(f)
+    output = pymupdf.open()
+    # insert_pdf uses 0-indexed pages, end is inclusive
+    output.insert_pdf(doc, from_page=start_page - 1, to_page=min(end_page, len(doc)) - 1)
+    output.save(output_path)
+    output.close()
 
 
 def main():
@@ -74,7 +74,7 @@ def main():
         sys.exit("Error: No sections found in curriculum map.")
 
     # Cache opened PDFs by filename
-    readers: dict[str, PdfReader] = {}
+    docs: dict[str, pymupdf.Document | None] = {}
     course_dir = Path("course_material")
 
     for row in rows:
@@ -83,16 +83,16 @@ def main():
             continue
 
         # Open the PDF (cached)
-        if textbook not in readers:
+        if textbook not in docs:
             pdf_path = course_dir / textbook
             if not pdf_path.exists():
                 print(f"Warning: {pdf_path} not found, skipping rows for this textbook")
-                readers[textbook] = None
+                docs[textbook] = None
                 continue
-            readers[textbook] = PdfReader(pdf_path)
+            docs[textbook] = pymupdf.open(pdf_path)
 
-        reader = readers[textbook]
-        if reader is None:
+        doc = docs[textbook]
+        if doc is None:
             continue
 
         start = int(row["start_page"])
@@ -100,9 +100,14 @@ def main():
         section_name = f"{slugify(str(row['unit']))}_{slugify(row['topic'])}.pdf"
         output_path = output_dir / section_name
 
-        split_pdf(reader, start, end, output_path)
+        split_pdf(doc, start, end, output_path)
         row["section_pdf"] = section_name
         print(f"  {section_name}  (pages {start}-{end} from {textbook})")
+
+    # Close cached documents
+    for doc in docs.values():
+        if doc is not None:
+            doc.close()
 
     # Write section_pdf values back to the YAML file
     data["sections"] = rows
