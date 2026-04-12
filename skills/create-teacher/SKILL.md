@@ -1,12 +1,10 @@
 ---
 name: create-teacher
 description: >
-  Use when the user wants to set up a teacher persona, configure a learner profile, or
-  initialize the teacher directory for a learning project. Trigger when the user says
-  things like "set up my teacher", "create a persona", "I want to start learning with
-  Socrates-7", "initialize my learning setup", or "help me design a teacher". This skill
-  MUST run before any teaching session can begin — invoke it proactively if no teacher/
-  directory exists in the workspace.
+  Explicitly invoked skill — only use when the user calls /create-teacher directly.
+  Do not auto-trigger on conversational phrases. Sets up a teacher persona and learner
+  profile in the teacher/ directory. This skill must run before any teaching session
+  can begin.
 ---
 
 # Create Teacher
