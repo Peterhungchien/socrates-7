@@ -4,7 +4,7 @@ A collection of Claude skills that scaffold and manage AI-powered Socratic learn
 
 ## What This Is
 
-Socrates-7 is a **skills repo** — not a learning project itself. It provides four Claude
+Socrates-7 is a **skills repo** — not a learning project itself. It provides five Claude
 skills that you install once and use across any number of learning projects. Each skill
 handles a distinct part of the learning workflow:
 
@@ -14,6 +14,7 @@ handles a distinct part of the learning workflow:
 | `scaffold-project` | Set up a learning project from a textbook or course |
 | `teaching-session` | Run a full Socratic study session |
 | `knowledge-base` | Navigate prerequisites and learning status |
+| `pdf-intel` | Shared PDF intelligence (TOC extraction, splitting, content extraction) |
 
 Your actual learning lives in a separate directory that the skills create and manage.
 
@@ -35,9 +36,9 @@ my-learning/                        <- your learning root (anywhere on disk)
       session_2026-04-09.ipynb      <- session notebook lives with the lesson
     backpropagation/
       meta.yaml
-  t-distribution-review/            <- ad-hoc standalone (user creates manually)
+  t-distribution-review/            <- ad-hoc standalone (created by teaching-session)
     meta.yaml
-    material.pdf
+    section_content.md              <- extracted by liteparse from source PDF
     session_2026-04-10.ipynb
 ```
 
@@ -107,6 +108,16 @@ Other useful flags:
 - `--list` — list available skills before installing
 - `--all` — install every skill in the repo
 - `-g` — install globally
+
+### LiteParse (for ad-hoc sessions and content extraction)
+
+```bash
+# Install the liteparse agent skill
+npx skills add run-llama/llamaparse-agent-skills --skill liteparse
+
+# Install the liteparse CLI
+npm i -g @llamaindex/liteparse
+```
 
 ### Verify installation
 
@@ -191,6 +202,12 @@ See [notebooklm-mcp-cli](https://github.com/jacob-bd/notebooklm-mcp-cli?tab=read
 create-teacher    ->  scaffold-project  ->  teaching-session  (repeat)
 (one-time setup)      (per textbook)        (each study session)
 
+                      --- or ---
+
+create-teacher    ->  teaching-session + PDF  (ad-hoc, no scaffold needed)
+(one-time setup)      (extracts section via pdf-intel + liteparse)
+
+pdf-intel         <-  invoked by scaffold-project + teaching-session
 knowledge-base    <-  invoked by teaching-session + user queries
 ```
 
@@ -201,13 +218,14 @@ Each skill directory contains its own examples and scripts:
 - `skills/create-teacher/examples/persona_example.md` — example teacher persona (Linus)
 - `skills/create-teacher/examples/learner_profile_example.md` — example learner profile
 - `skills/scaffold-project/examples/meta.yaml` — annotated meta.yaml with all fields
-- `skills/scaffold-project/scripts/split_pdf.py` — PDF splitter for hybrid NLM mode
+- `skills/pdf-intel/scripts/extract_toc.py` — PyMuPDF TOC extractor (primary structure detection)
+- `skills/pdf-intel/scripts/split_pdf.py` — PDF splitter for hybrid NLM mode
 - `skills/scaffold-project/notebooklm_setup.md` — NotebookLM setup checklist
 - `skills/teaching-session/session-protocol.md` — detailed Socratic protocol rules
 
 ## Roadmap
 
-- **Boundary correction for PDF splitting** — use [liteparse](https://github.com/run-llama/liteparse) to verify and adjust page boundaries returned by NotebookLM, so section PDFs align with actual chapter/section starts and ends
+- ~~**Boundary correction for PDF splitting**~~ — done: PyMuPDF TOC extraction is now the primary structure detection method, with [liteparse](https://github.com/run-llama/liteparse) available for content extraction and boundary verification
 - **Per-project teacher** — allow each learning project to have its own teacher persona and learner profile, rather than sharing a single global teacher across all projects
 - **Structured memory system** — replace the current single-file memory with a structured approach (e.g. [mempalace](https://github.com/milla-jovovich/mempalace)) so cross-session recall of misconceptions, learning patterns, and concept connections scales beyond what a flat text file can support
 
