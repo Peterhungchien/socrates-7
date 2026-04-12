@@ -1,12 +1,10 @@
 ---
 name: scaffold-project
 description: >
-  Use when the user wants to create a new learning project from a textbook or course
-  material, set up curriculum structure, configure NotebookLM, or organize lesson
-  directories. Trigger on: "set up a project for [textbook]", "scaffold my learning
-  project", "I want to study [course] systematically", "help me structure my curriculum",
-  "split my PDF into sections". This skill should be used after create-teacher and before
-  the first teaching session when the user has course material to organize.
+  Explicitly invoked skill — only use when the user calls /scaffold-project directly.
+  Do not auto-trigger on conversational phrases. Creates a structured learning project
+  from a textbook or course material, sets up curriculum structure, configures
+  NotebookLM, and organizes lesson directories.
 ---
 
 # Scaffold Project
