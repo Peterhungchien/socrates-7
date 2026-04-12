@@ -76,6 +76,41 @@ Scan `course_material/` and list what's there. If empty, note it and continue.
 
 ---
 
+## Step 2.5 — Extract curriculum structure
+
+Read the `pdf-intel` skill, then use its **TOC extraction** operation on each PDF found
+in `course_material/`. The pdf-intel skill documents how to run the script and interpret
+the output (YAML with full TOC hierarchy and quality metrics).
+
+### If TOC found with good quality:
+Use the extracted TOC to auto-populate `curriculum_map.yaml`. Examine the hierarchy
+levels (the `level` field on each entry) and select the appropriate granularity for
+lessons — e.g., chapter-level (level 1) for a broad survey course, section-level
+(level 2 or 3) for a focused deep dive. Use your judgment based on the number of
+entries at each level and the scope of the project.
+
+Show the user a summary:
+> "I extracted the table of contents from [filename]. Found [N] entries across [L]
+> levels. I'll use level [X] entries as lesson boundaries. Here's the structure:"
+
+Then list the lessons and proceed — no manual review needed.
+
+### If TOC found but looks suspect:
+If the quality metrics suggest an incomplete TOC (very few entries for a large book,
+coverage ratio below 0.5, or max gap exceeding 100 pages), present the extracted TOC
+to the user and ask:
+
+> "I found an embedded TOC in [filename], but it looks incomplete ([N] entries for
+> [P] pages). Would you like to:
+> 1. Use this TOC anyway
+> 2. Query NotebookLM for a more detailed structure instead"
+
+### If no TOC embedded:
+The script exits with code 1. Fall back to NotebookLM query (Step 3 below) or ask the
+user to provide the structure manually.
+
+---
+
 ## Step 3 — NotebookLM mode
 
 Ask:
@@ -90,7 +125,7 @@ Record the chosen mode in `curriculum_map.yaml` as a top-level field:
 nlm_mode: hybrid  # passive | active | hybrid
 ```
 
-### If hybrid mode:
+### If hybrid or active mode:
 Walk the user through [notebooklm_setup.md](notebooklm_setup.md) setup checklist:
 1. `uv tool install notebooklm-mcp-cli`
 2. `nlm setup add claude-desktop`
@@ -99,9 +134,10 @@ Walk the user through [notebooklm_setup.md](notebooklm_setup.md) setup checklist
 5. Call `source_add` for each file in `course_material/`
 6. Note the notebook ID for use during sessions
 
-Then offer to auto-populate `curriculum_map.yaml` via NLM:
-> "I can query NotebookLM to extract the chapter/section structure from your textbook.
-> Want me to do that now?"
+### If curriculum_map.yaml is still empty (no TOC was extracted in Step 2.5):
+Offer to auto-populate via NLM:
+> "I couldn't extract the structure from the PDF directly. I can query NotebookLM to
+> get the chapter/section structure. Want me to do that now?"
 
 If yes: call `notebook_query` with:
 `"List all chapters and sections of [textbook title] with page ranges. Format as:
@@ -111,10 +147,9 @@ Parse the response, populate `curriculum_map.yaml` lessons list, and present it 
 review:
 > "Here's the structure I found. Review and correct any page numbers that look off."
 
-After confirmation, run the PDF split:
-```bash
-python ${CLAUDE_SKILL_DIR}/scripts/split_pdf.py
-```
+### If hybrid mode — split PDFs:
+After `curriculum_map.yaml` is populated (by either TOC extraction or NLM query), use
+the pdf-intel skill's **Split PDF** operation to create section PDFs.
 
 ---
 
